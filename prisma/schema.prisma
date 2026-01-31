@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model categorias {
+  id_categorias   Int        @id @default(autoincrement())
+  nome_categorias String     @unique(map: "nome_categorias_unique") @db.VarChar(50)
+  produtos        produtos[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model produtos {
+  id_produtos     Int               @id @default(autoincrement())
+  nome_produtos   String            @db.VarChar(100)
+  desc_produtos   String?
+  preco_produtos  Decimal?          @db.Decimal(10, 2)
+  id_categoria    Int?
+  categorias      categorias?       @relation(fields: [id_categoria], references: [id_categorias], onDelete: NoAction, onUpdate: NoAction)
+  produtos_images produtos_images[]
+}
+
+model produtos_images {
+  id_images  Int       @id @default(autoincrement())
+  images_url String
+  principal  Boolean?  @default(false)
+  id_produto Int?
+  produtos   produtos? @relation(fields: [id_produto], references: [id_produtos], onDelete: NoAction, onUpdate: NoAction)
+}
