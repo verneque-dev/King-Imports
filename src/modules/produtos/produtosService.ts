@@ -15,7 +15,8 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
 
-      await ProdutosRepository.getProdutosById(parsedId.data.id)
+      const produtos = await ProdutosRepository.getProdutosById(parsedId.data.id)
+      return produtos
     }
 
     else if (search) {
@@ -23,6 +24,8 @@ export const ProdutosService = {
       if (!parsedSearch.success) {
         throw new AppError("Dados inválidos", 400)
       }
+      const produtos = ProdutosRepository.getProdutosByName(parsedSearch.data.search)
+      return produtos
     }
 
     const produtos = await ProdutosRepository.getProdutos()

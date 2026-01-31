@@ -10,5 +10,17 @@ export const ProdutosRepository = {
     const listProdutos = await prisma.produtos.findUnique({
       where: { id_produtos: id }
     })
+    return listProdutos
+  },
+
+  getProdutosByName: async function(search: string) {
+    const listProdutos = await prisma.produtos.findMany({
+      where: {
+        nome_produtos: {
+          contains: search
+        }
+      }
+    })
+    return listProdutos
   }
 }
