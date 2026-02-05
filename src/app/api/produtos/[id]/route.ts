@@ -27,16 +27,3 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500})
   }
 }
-
-export async function PUT(req: NextRequest) {
-  try {
-    await ProdutosService.updateProduto(req)
-    return NextResponse.json({ message: "Produto atualizado com sucesso" }, { status: 200 })
-  }
-  catch (err) {
-    if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
-    }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500})
-  }
-}

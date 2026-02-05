@@ -8,6 +8,12 @@ interface Produto {
   produto_id?: number
 }
 
+interface Images {
+  url_image: string,
+  produto_id: number,
+  pincipal: boolean,
+}
+
 export const ProdutosRepository = {
   getProdutos: async function () {
     const listProdutos = await prisma.produtos.findMany()
@@ -79,5 +85,30 @@ export const ProdutosRepository = {
     }
    })
    return produto
+  },
+
+  getImages: async function () {
+    const images = await prisma.produtos_images.findMany()
+    return images
+  },
+
+  uploadImage: async function (body: Images) {
+    const image = await prisma.produtos_images.create({
+      data: {
+        images_url: body.url_image,
+        id_produto: body.produto_id,
+        principal: body.pincipal
+      }
+    })
+    return image
+  },
+
+  deleteImage: async function (id: number) {
+    const image = await prisma.produtos_images.delete({
+      where: {
+        id_images: id
+      }
+    })
+    return image
   }
 }

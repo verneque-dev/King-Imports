@@ -15,13 +15,15 @@ model categorias {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model produtos {
-  id_produtos     Int               @id @default(autoincrement())
-  nome_produtos   String            @db.VarChar(100)
-  desc_produtos   String?
-  preco_produtos  Decimal?          @db.Decimal(10, 2)
-  id_categoria    Int?
-  categorias      categorias?       @relation(fields: [id_categoria], references: [id_categorias], onDelete: NoAction, onUpdate: NoAction)
-  produtos_images produtos_images[]
+  id_produtos         Int                   @id @default(autoincrement())
+  nome_produtos       String                @db.VarChar(100)
+  desc_produtos       String?
+  preco_produtos      Decimal?              @db.Decimal(10, 2)
+  id_categoria        Int?
+  categorias          categorias?           @relation(fields: [id_categoria], references: [id_categorias], onDelete: NoAction, onUpdate: NoAction)
+  produtos_images     produtos_images[]
+  produtos_avaliacoes produtos_avaliacoes[]
+  carrinho_itens      carrinho_itens[]
 }
 
 model produtos_images {
@@ -30,4 +32,38 @@ model produtos_images {
   principal  Boolean?  @default(false)
   id_produto Int?
   produtos   produtos? @relation(fields: [id_produto], references: [id_produtos], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model produtos_avaliacoes {
+  id_avaliacao         Int      @id @default(autoincrement())
+  nota_avaliacao       Int
+  comentario_avaliacao String?
+  created_at           DateTime @default(now())
+
+  id_produto Int
+  produtos   produtos @relation(fields: [id_produto], references: [id_produtos], onDelete: Cascade)
+}
+
+model carrinho {
+  id_carrinho Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
+
+  carrinho_itens carrinho_itens[]
+}
+
+model carrinho_itens {
+  id_itens         Int @id @default(autoincrement())
+  quantidade_itens Int
+
+  id_carrinho Int
+  id_produto  Int
+
+  carrinho carrinho @relation(fields: [id_carrinho], references: [id_carrinho], onDelete: Cascade)
+  produtos produtos @relation(fields: [id_produto], references: [id_produtos])
+}
+
+model admin {
+  id_admin   Int    @id @default(autoincrement())
+  email      String @unique
+  senha_hash String
 }

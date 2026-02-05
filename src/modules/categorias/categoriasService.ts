@@ -11,8 +11,11 @@ export const CategoriasService = {
       if (!parse.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const categorias = await CategoriasRepository.getCategoriasById(parse.data.id)
-      return categorias
+      const categoria = CategoriasRepository.getCategoriasById(parse.data.id)
+      if (!categoria) {
+        throw new AppError("Categoria não encontrada", 404)
+      }
+      return categoria
     }
     const categorias = await CategoriasRepository.getCategorias()
     return categorias
@@ -24,8 +27,7 @@ export const CategoriasService = {
     if (!parse.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    const categoria = await CategoriasRepository.createCategorias(parse.data.nome_categoria)
-    return categoria
+    await CategoriasRepository.createCategorias(parse.data.nome_categoria)
   },
 
   deleteCategorias: async function (context: { params: Promise<{ id: string }> }) {
@@ -34,8 +36,12 @@ export const CategoriasService = {
     if (!parse.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    const categoria = await CategoriasRepository.deleteCategorias(parse.data.id)
-    return categoria
+
+    const categoria = CategoriasRepository.getCategoriasById(parse.data.id)
+    if (!categoria) {
+      throw new AppError("Categoria não encontrada", 404)
+    }
+    await CategoriasRepository.deleteCategorias(parse.data.id)
   },
 
   updateCategorias: async function (req: NextRequest) {
@@ -45,7 +51,10 @@ export const CategoriasService = {
       throw new AppError("Dados inválidos", 400)
     }
     const { nome_categoria, id } = parse.data
-    const categoria = await CategoriasRepository.updateCategorias(nome_categoria, id)
-    return categoria
+    const categoria = CategoriasRepository.getCategoriasById(id)
+    if (!categoria) {
+      throw new AppError("Categoria não encontrada", 404)
+    }
+    await CategoriasRepository.updateCategorias(nome_categoria, id)
   }
 }

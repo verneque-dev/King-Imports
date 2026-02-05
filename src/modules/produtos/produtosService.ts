@@ -17,6 +17,9 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
       const produtos = ProdutosRepository.getProdutosById(parsedId.data.id)
+      if (!produtos) {
+        throw new AppError("Produto não encontrado", 404)
+      }
       return produtos
     }
 
@@ -58,16 +61,26 @@ export const ProdutosService = {
     if (!parsedId.success) {
       throw new AppError("Dados inválidos", 400)
     }
+
+    const produto = await ProdutosRepository.getProdutosById(parsedId.data.id)
+    if (!produto) {
+      throw new AppError("Produto não encontrado", 404)
+    }
     await ProdutosRepository.deleteProdutos(parsedId.data.id)
   },
 
   updateProduto: async function (req: NextRequest) {
     const body = await req.json()
     const parsedBody = SchemaProdutos.updateProdutoSchema.safeParse(body)
-
     if (!parsedBody.success) {
       throw new AppError("Dados inválidos", 400)
     }
+
+    const produto = await ProdutosRepository.getProdutosById(parsedBody.data.produto_id)
+    if (!produto) {
+      throw new AppError("Produto não encontrado", 404)
+    }
+
     await ProdutosRepository.updateProdutos(parsedBody.data)
   }
 }
