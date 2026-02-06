@@ -9,21 +9,21 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    await ProdutosService.deleteProduto(context)
-    return NextResponse.json({ message: "Produto deletado com sucesso" }, { status: 200 })
+    const produto = await ProdutosService.deleteProduto(context)
+    return NextResponse.json({ data: produto, message: "Produto deletado com sucesso" }, { status: 200 })
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500})
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500})
   }
 }

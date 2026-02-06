@@ -31,5 +31,19 @@ export const SchemaProdutos = {
     preco_produto: z.coerce.number().positive(),
     categoria_id: z.coerce.number().positive(),
     produto_id: z.coerce.number().positive()
+  }),
+
+  uploadImages: z.object({
+    url_image: z.string(),
+    produto_id: z.coerce.number().positive(),
+    principal: z.boolean()
+  }),
+
+  deleteImages: z.object({
+    id: z.coerce.number().positive()
+  }),
+
+  getImageById: z.object({
+    id: z.coerce.number().positive()
   })
 }

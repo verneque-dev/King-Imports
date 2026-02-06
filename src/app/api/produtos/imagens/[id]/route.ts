@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CategoriasService } from "@/modules/categorias/categoriasService";
+import { ProdutosService } from "../../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const categoria = await CategoriasService.getCategorias(context)
-    return NextResponse.json(categoria, { status: 200 })
+    const images = await ProdutosService.getImages(context)
+    return NextResponse.json(images, { status: 200 })
   }
   catch (err) {
     if (err instanceof AppError) {
@@ -17,8 +17,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const categoria = await CategoriasService.deleteCategorias(context)
-    return NextResponse.json({ data: categoria, message: "Categoria deletada com sucesso" }, { status: 200 })
+    const image = await ProdutosService.deleteImage(context)
+    return NextResponse.json({ data: image, message: "Imagem deletada com sucesso" }, { status: 200 })
   }
   catch (err) {
     if (err instanceof AppError) {

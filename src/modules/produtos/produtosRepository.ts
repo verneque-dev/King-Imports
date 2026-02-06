@@ -11,7 +11,7 @@ interface Produto {
 interface Images {
   url_image: string,
   produto_id: number,
-  pincipal: boolean,
+  principal: boolean,
 }
 
 export const ProdutosRepository = {
@@ -92,12 +92,21 @@ export const ProdutosRepository = {
     return images
   },
 
+  getImagesById: async function (id: number) {
+    const images = await prisma.produtos_images.findUnique({
+      where: {
+        id_images: id
+      }
+    })
+    return images
+  },
+
   uploadImage: async function (body: Images) {
     const image = await prisma.produtos_images.create({
       data: {
         images_url: body.url_image,
         id_produto: body.produto_id,
-        principal: body.pincipal
+        principal: body.principal
       }
     })
     return image

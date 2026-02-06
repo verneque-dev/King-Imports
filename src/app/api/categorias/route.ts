@@ -17,26 +17,26 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    await CategoriasService.createCategorias(req)
-    return NextResponse.json({ message: "Categoria criada com sucesso" }, { status: 201 })
+    const categoria = await CategoriasService.createCategorias(req)
+    return NextResponse.json({ data: categoria, message: "Categoria criada com sucesso" }, { status: 201 })
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
 
 export async function PUT(req: NextRequest) {
   try {
-    await CategoriasService.updateCategorias(req)
-    return NextResponse.json({ message: "Categoria atualizada com sucesso" }, { status: 200 })
+    const categoria = await CategoriasService.updateCategorias(req)
+    return NextResponse.json({ data: categoria, message: "Categoria atualizada com sucesso" }, { status: 200 })
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }

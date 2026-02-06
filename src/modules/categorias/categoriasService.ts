@@ -7,11 +7,11 @@ export const CategoriasService = {
   getCategorias: async function (context?: { params: Promise<{ id: string }> }) {
     if (context) {
       const { id } = await context.params
-      const parse = CategoriasSchema.getCategoriasById.safeParse({ id })
-      if (!parse.success) {
+      const parsed = CategoriasSchema.getCategoriasById.safeParse({ id })
+      if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const categoria = CategoriasRepository.getCategoriasById(parse.data.id)
+      const categoria = CategoriasRepository.getCategoriasById(parsed.data.id)
       if (!categoria) {
         throw new AppError("Categoria não encontrada", 404)
       }
@@ -23,38 +23,41 @@ export const CategoriasService = {
 
   createCategorias: async function (req: NextRequest) {
     const body = await req.json()
-    const parse = CategoriasSchema.createCategorias.safeParse(body)
-    if (!parse.success) {
+    const parsed = CategoriasSchema.createCategorias.safeParse(body)
+    if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    await CategoriasRepository.createCategorias(parse.data.nome_categoria)
+    const categoria = await CategoriasRepository.createCategorias(parsed.data.nome_categoria)
+    return categoria
   },
 
   deleteCategorias: async function (context: { params: Promise<{ id: string }> }) {
     const { id } = await context.params
-    const parse = CategoriasSchema.deleteCategorias.safeParse({ id })
-    if (!parse.success) {
+    const parsed = CategoriasSchema.deleteCategorias.safeParse({ id })
+    if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
 
-    const categoria = CategoriasRepository.getCategoriasById(parse.data.id)
-    if (!categoria) {
+    const verifyId = await CategoriasRepository.getCategoriasById(parsed.data.id)
+    if (!verifyId) {
       throw new AppError("Categoria não encontrada", 404)
     }
-    await CategoriasRepository.deleteCategorias(parse.data.id)
+    const categoria = await CategoriasRepository.deleteCategorias(parsed.data.id)
+    return categoria
   },
 
   updateCategorias: async function (req: NextRequest) {
     const body = await req.json()
-    const parse = CategoriasSchema.updateCategoria.safeParse(body)
-    if (!parse.success) {
+    const parsed = CategoriasSchema.updateCategoria.safeParse(body)
+    if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    const { nome_categoria, id } = parse.data
-    const categoria = CategoriasRepository.getCategoriasById(id)
-    if (!categoria) {
+    const { nome_categoria, id } = parsed.data
+    const verifyId = await CategoriasRepository.getCategoriasById(id)
+    if (!verifyId) {
       throw new AppError("Categoria não encontrada", 404)
     }
-    await CategoriasRepository.updateCategorias(nome_categoria, id)
+    const categoria = await CategoriasRepository.updateCategorias(nome_categoria, id)
+    return categoria
   }
 }

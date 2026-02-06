@@ -32,7 +32,7 @@ export const ProdutosService = {
       return produtos
     }
 
-    else if (page && limit) {
+    if (page && limit) {
       const parsed = SchemaProdutos.getProdutoByPageSchema.safeParse({ page, limit })
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
@@ -51,7 +51,8 @@ export const ProdutosService = {
     if (!parsedBody.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    await ProdutosRepository.createProdutos(parsedBody.data)
+    const produto = await ProdutosRepository.createProdutos(parsedBody.data)
+    return produto
   },
 
   deleteProduto: async function (context: { params: Promise<{ id: string }> }) {
@@ -62,11 +63,12 @@ export const ProdutosService = {
       throw new AppError("Dados inválidos", 400)
     }
 
-    const produto = await ProdutosRepository.getProdutosById(parsedId.data.id)
-    if (!produto) {
+    const verifyId = await ProdutosRepository.getProdutosById(parsedId.data.id)
+    if (!verifyId) {
       throw new AppError("Produto não encontrado", 404)
     }
-    await ProdutosRepository.deleteProdutos(parsedId.data.id)
+    const produto = await ProdutosRepository.deleteProdutos(parsedId.data.id)
+    return produto
   },
 
   updateProduto: async function (req: NextRequest) {
@@ -76,11 +78,54 @@ export const ProdutosService = {
       throw new AppError("Dados inválidos", 400)
     }
 
-    const produto = await ProdutosRepository.getProdutosById(parsedBody.data.produto_id)
-    if (!produto) {
+    const verifyId = await ProdutosRepository.getProdutosById(parsedBody.data.produto_id)
+    if (!verifyId) {
       throw new AppError("Produto não encontrado", 404)
     }
 
-    await ProdutosRepository.updateProdutos(parsedBody.data)
+    const produto = await ProdutosRepository.updateProdutos(parsedBody.data)
+    return produto
+  },
+
+  getImages: async function (context?: { params: Promise<{ id: string }> }) {
+    if (context) {
+      const { id } = await context.params
+      const parsed = SchemaProdutos.getImageById.safeParse({ id })
+      if (!parsed.success) {
+        throw new AppError("Dados inválidos", 400)
+      }
+      const image = await ProdutosRepository.getImagesById(parsed.data.id)
+      return image
+    }
+    const images = await ProdutosRepository.getImages()
+    return images
+  },
+
+  uploadImage: async function (req: NextRequest) {
+    const body = await req.json()
+    const parsed = SchemaProdutos.uploadImages.safeParse(body)
+    if (!parsed.success) {
+      throw new AppError("Dados inválidos", 400)
+    }
+    const verifyId = await ProdutosRepository.getProdutosById(parsed.data.produto_id)
+    if (!verifyId) {
+       throw new AppError("Produto não encontrado", 404)
+    }
+    const image = await ProdutosRepository.uploadImage(parsed.data)
+    return image
+  },
+
+  deleteImage: async function (context: { params: Promise<{ id: string }> }) {
+    const { id } = await context.params
+    const parsed = SchemaProdutos.deleteImages.safeParse({ id })
+    if (!parsed.success) {
+      throw new AppError("Dados inválidos", 400)
+    }
+    const verifyId = await ProdutosRepository.getImagesById(parsed.data.id)
+    if (!verifyId) {
+      throw new AppError("Imagem não encontrada", 404)
+    }
+    const image = await ProdutosRepository.deleteImage(parsed.data.id)
+    return image
   }
 }
