@@ -70,5 +70,6 @@ export const AvaliacoesRepository = {
         aprovado: aprovado
       }
     })
+    return avaliacao
   }
 }

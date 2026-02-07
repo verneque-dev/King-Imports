@@ -19,8 +19,13 @@ export const AvaliacoesService = {
     }
 
     if (aprovado) {
+      if (aprovado !== "true" && aprovado !== "false") {
+        throw new AppError("Dados inválidos", 400)
+      }
+      const status = aprovado === "true" ? true : false
+
       const ok = aprovado == "true" ? true : false
-      const avaliacoes = await AvaliacoesRepository.getAvaliacoesByQuery(ok)
+      const avaliacoes = await AvaliacoesRepository.getAvaliacoesByQuery(status)
       return avaliacoes
     }
     const avaliacoes = await AvaliacoesRepository.getAvaliacoes()
