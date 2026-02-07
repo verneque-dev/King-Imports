@@ -17,7 +17,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const categoria = await CategoriasService.createCategorias(req)
+    const body = await req.json()
+    const categoria = await CategoriasService.createCategorias(body)
     return NextResponse.json({ data: categoria, message: "Categoria criada com sucesso" }, { status: 201 })
   }
   catch (err) {
@@ -30,7 +31,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const categoria = await CategoriasService.updateCategorias(req)
+    const body = await req.json()
+    const categoria = await CategoriasService.updateCategorias(body)
     return NextResponse.json({ data: categoria, message: "Categoria atualizada com sucesso" }, { status: 200 })
   }
   catch (err) {

@@ -4,7 +4,8 @@ import { AppError } from "@/shared/errors/AppError";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const categoria = await CategoriasService.getCategorias(context)
+    const { id } = await context.params
+    const categoria = await CategoriasService.getCategorias(id)
     return NextResponse.json(categoria, { status: 200 })
   }
   catch (err) {
@@ -17,7 +18,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const categoria = await CategoriasService.deleteCategorias(context)
+    const { id } = await context.params
+    const categoria = await CategoriasService.deleteCategorias(id)
     return NextResponse.json({ data: categoria, message: "Categoria deletada com sucesso" }, { status: 200 })
   }
   catch (err) {

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ProdutosService } from "../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
+import { ImagensService } from "@/modules/produtos/imagens/imagensService";
 
 export async function GET() {
   try {
-    const images = await ProdutosService.getImages()
+    const images = await ImagensService.getImages()
     return NextResponse.json(images, { status: 200 })
   }
   catch (err) {
@@ -17,7 +18,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const image = await ProdutosService.uploadImage(req)
+    const body = await req.json()
+    const image = await ImagensService.uploadImage(body)
     return NextResponse.json({ data: image, message: "Upload da imagem feito com sucesso" }, { status: 200 })
   }
   catch (err) {

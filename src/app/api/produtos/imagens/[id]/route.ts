@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ProdutosService } from "../../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
+import { ImagensService } from "@/modules/produtos/imagens/imagensService";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const images = await ProdutosService.getImages(context)
+    const { id } = await context.params
+    const images = await ImagensService.getImages(id)
     return NextResponse.json(images, { status: 200 })
   }
   catch (err) {
@@ -17,7 +19,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const image = await ProdutosService.deleteImage(context)
+    const { id } = await context.params
+    const image = await ImagensService.deleteImage(id)
     return NextResponse.json({ data: image, message: "Imagem deletada com sucesso" }, { status: 200 })
   }
   catch (err) {

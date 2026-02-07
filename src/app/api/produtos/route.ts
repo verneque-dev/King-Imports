@@ -4,7 +4,7 @@ import { AppError } from "@/shared/errors/AppError";
 
 export async function GET(req: NextRequest) {
   try {
-    const data = await ProdutosService.getProdutos(req)
+    const data = await ProdutosService.getProdutos(req.url)
     return NextResponse.json(data, { status: 200 })
   }
   catch (err) {
@@ -17,7 +17,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const produto = await ProdutosService.createProduto(req)
+    const body = await req.json()
+    const produto = await ProdutosService.createProduto(body)
     return NextResponse.json({data: produto, message: "Produto criado" }, { status: 201 })
   }
   catch (err) {
@@ -30,7 +31,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const produto = await ProdutosService.updateProduto(req)
+    const body = await req.json()
+    const produto = await ProdutosService.updateProduto(body)
     return NextResponse.json({ data: produto, message: "Produto atualizado com sucesso" }, { status: 200 })
   }
   catch (err) {

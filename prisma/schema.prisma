@@ -19,7 +19,7 @@ model produtos {
   nome_produtos       String                @db.VarChar(100)
   desc_produtos       String?
   preco_produtos      Decimal?              @db.Decimal(10, 2)
-  id_categoria        Int?
+  id_categoria        Int
   categorias          categorias?           @relation(fields: [id_categoria], references: [id_categorias], onDelete: NoAction, onUpdate: NoAction)
   produtos_images     produtos_images[]
   produtos_avaliacoes produtos_avaliacoes[]
@@ -29,15 +29,17 @@ model produtos {
 model produtos_images {
   id_images  Int       @id @default(autoincrement())
   images_url String
-  principal  Boolean?  @default(false)
-  id_produto Int?
+  principal  Boolean   @default(false)
+  id_produto Int
   produtos   produtos? @relation(fields: [id_produto], references: [id_produtos], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model produtos_avaliacoes {
   id_avaliacao         Int      @id @default(autoincrement())
+  nome_user            String   @db.VarChar(50)
   nota_avaliacao       Int
-  comentario_avaliacao String?
+  comentario_avaliacao String?  @db.VarChar(100)
+  aprovado             Boolean  @default(false)
   created_at           DateTime @default(now())
 
   id_produto Int
@@ -46,6 +48,7 @@ model produtos_avaliacoes {
 
 model carrinho {
   id_carrinho Int      @id @default(autoincrement())
+  token       String
   created_at  DateTime @default(now())
 
   carrinho_itens carrinho_itens[]

@@ -4,9 +4,8 @@ import { AppError } from "@/shared/errors/AppError";
 import { NextRequest } from "next/server";
 
 export const CategoriasService = {
-  getCategorias: async function (context?: { params: Promise<{ id: string }> }) {
-    if (context) {
-      const { id } = await context.params
+  getCategorias: async function (id?: string) {
+    if (id) {
       const parsed = CategoriasSchema.getCategoriasById.safeParse({ id })
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
@@ -21,8 +20,7 @@ export const CategoriasService = {
     return categorias
   },
 
-  createCategorias: async function (req: NextRequest) {
-    const body = await req.json()
+  createCategorias: async function (body: unknown) {
     const parsed = CategoriasSchema.createCategorias.safeParse(body)
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
@@ -31,8 +29,7 @@ export const CategoriasService = {
     return categoria
   },
 
-  deleteCategorias: async function (context: { params: Promise<{ id: string }> }) {
-    const { id } = await context.params
+  deleteCategorias: async function (id: string) {
     const parsed = CategoriasSchema.deleteCategorias.safeParse({ id })
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
@@ -46,8 +43,7 @@ export const CategoriasService = {
     return categoria
   },
 
-  updateCategorias: async function (req: NextRequest) {
-    const body = await req.json()
+  updateCategorias: async function (body: unknown) {
     const parsed = CategoriasSchema.updateCategoria.safeParse(body)
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
