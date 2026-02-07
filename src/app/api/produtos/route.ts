@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const produto = await ProdutosService.createProduto(body)
-    return NextResponse.json({data: produto, message: "Produto criado" }, { status: 201 })
+    return NextResponse.json({data: produto, message: "Produto criado com sucesso" }, { status: 201 })
   }
   catch (err) {
     if (err instanceof AppError) {

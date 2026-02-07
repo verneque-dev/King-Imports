@@ -22,6 +22,24 @@ export const AvaliacoesRepository = {
     return avaliacoes
   },
 
+  getAvliacoesById: async function (id_avaliacao: number) {
+    const avaliacao = await prisma.produtos_avaliacoes.findUnique({
+      where: {
+        id_avaliacao: id_avaliacao
+      }
+    })
+    return avaliacao
+  },
+
+  getAvaliacoesByQuery: async function (aprovado: boolean) {
+    const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      where: {
+        aprovado: aprovado
+      }
+    })
+    return avaliacoes
+  },
+
   createAvaliacao: async function (body: Avaliacao) {
     const avaliacao = await prisma.produtos_avaliacoes.create({
       data: {
