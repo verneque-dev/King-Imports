@@ -14,8 +14,11 @@ export const AvaliacoesService = {
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const avaliacoes = await AvaliacoesRepository.getAvaliacoesPorProduto(parsed.data.id)
-      return avaliacoes
+      const avaliacao = await AvaliacoesRepository.getAvaliacoesPorProduto(parsed.data.id)
+      if (!avaliacao) {
+        throw new AppError("Avaliacao não encontrada", 404)
+      }
+      return avaliacao
     }
 
     if (aprovado) {
@@ -24,7 +27,6 @@ export const AvaliacoesService = {
       }
       const status = aprovado === "true" ? true : false
 
-      const ok = aprovado == "true" ? true : false
       const avaliacoes = await AvaliacoesRepository.getAvaliacoesByQuery(status)
       return avaliacoes
     }
@@ -50,7 +52,7 @@ export const AvaliacoesService = {
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    const verifyIdAvaliacao = await AvaliacoesRepository.getAvliacoesById(parsed.data.id)
+    const verifyIdAvaliacao = await AvaliacoesRepository.getAvaliacoesById(parsed.data.id)
     if (!verifyIdAvaliacao) {
       throw new AppError("Avaliação não encontrada", 404)
     }
@@ -63,7 +65,7 @@ export const AvaliacoesService = {
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
-    const verifyIdAvaliacao = await AvaliacoesRepository.getAvliacoesById(parsed.data.id)
+    const verifyIdAvaliacao = await AvaliacoesRepository.getAvaliacoesById(parsed.data.id)
     if (!verifyIdAvaliacao) {
       throw new AppError("Avaliação não encontrada", 404)
     }

@@ -16,12 +16,28 @@ interface Images {
 
 export const ProdutosRepository = {
   getProdutos: async function () {
-    const listProdutos = await prisma.produtos.findMany()
+    const listProdutos = await prisma.produtos.findMany({
+      include: {
+        produtos_images: {
+          where: {
+            principal: true
+          },
+          take: 1
+        }
+      }
+    })
     return listProdutos
   },
 
   getProdutosById: async function (id: number) {
     const listProdutos = await prisma.produtos.findUnique({
+      include: {
+        produtos_images: {
+          orderBy: {
+            principal: "desc"
+          }
+        }
+      },
       where: {
         id_produtos: id
       }
@@ -31,9 +47,17 @@ export const ProdutosRepository = {
 
   getProdutosByName: async function (search: string) {
     const listProdutos = await prisma.produtos.findMany({
+      include: {
+        produtos_images: {
+          where: {
+            principal: true
+          },
+          take: 1
+        }
+      },
       where: {
         nome_produtos: {
-          contains: search
+          contains: search,
         }
       }
     })
@@ -42,7 +66,15 @@ export const ProdutosRepository = {
 
   getProdutosPages: async function (page: number, limit: number) {
     const listProdutos = await prisma.produtos.findMany({
-      skip: (page - 1) * limit, 
+      include: {
+        produtos_images: {
+          where: {
+            principal: true
+          },
+          take: 1
+        }
+      },
+      skip: (page - 1) * limit,
       take: limit,
       orderBy: {
         id_produtos: "asc"
@@ -73,17 +105,17 @@ export const ProdutosRepository = {
   },
 
   updateProdutos: async function (body: Produto) {
-   const produto = await prisma.produtos.update({
-    where: {
-      id_produtos: body.produto_id
-    },
-    data: {
-      nome_produtos: body.nome_produto,
-      desc_produtos: body.desc_produto,
-      preco_produtos: body.preco_produto,
-      id_categoria: body.categoria_id
-    }
-   })
-   return produto
+    const produto = await prisma.produtos.update({
+      where: {
+        id_produtos: body.produto_id
+      },
+      data: {
+        nome_produtos: body.nome_produto,
+        desc_produtos: body.desc_produto,
+        preco_produtos: body.preco_produto,
+        id_categoria: body.categoria_id
+      }
+    })
+    return produto
   }
 }

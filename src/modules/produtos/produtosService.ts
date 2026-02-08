@@ -2,6 +2,7 @@ import { ProdutosRepository } from "./produtosRepository"
 import { SchemaProdutos } from "./produtos.schema"
 import { AppError } from "@/shared/errors/AppError"
 import { CategoriasRepository } from "../categorias/categoriasRepository"
+import { AvaliacoesRepository } from "./avaliacoes/avaliacoesRepository"
 
 export const ProdutosService = {
   getProdutos: async function (url: string, id?: string) {
@@ -15,11 +16,19 @@ export const ProdutosService = {
       if (!parsedId.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const produtos = ProdutosRepository.getProdutosById(parsedId.data.id)
-      if (!produtos) {
+      const produto = await ProdutosRepository.getProdutosById(parsedId.data.id)
+      if (!produto) {
         throw new AppError("Produto não encontrado", 404)
       }
-      return produtos
+      const resumo = await AvaliacoesRepository.getResumoPorProduto(parsedId.data.id)
+      const media = resumo._avg.nota_avaliacao ?? 0
+      const total = resumo._count.nota_avaliacao
+
+      return {
+        ...produto,
+        media,
+        total
+      }
     }
 
     if (search) {
@@ -27,7 +36,7 @@ export const ProdutosService = {
       if (!parsedSearch.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const produtos = ProdutosRepository.getProdutosByName(search)
+      const produtos = await ProdutosRepository.getProdutosByName(search)
       return produtos
     }
 
@@ -36,7 +45,7 @@ export const ProdutosService = {
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const produtos = ProdutosRepository.getProdutosPages(parsed.data.page, parsed.data.limit)
+      const produtos = await ProdutosRepository.getProdutosPages(parsed.data.page, parsed.data.limit)
       return produtos
     }
 

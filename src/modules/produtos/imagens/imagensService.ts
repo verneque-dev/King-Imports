@@ -11,6 +11,9 @@ export const ImagensService = {
         throw new AppError("Dados inválidos", 400)
       }
       const image = await ImagensRepository.getImagesById(parsed.data.id)
+      if (!image) {
+        throw new AppError("Imagem não encontrada", 404)
+      }
       return image
     }
     const images = await ImagensRepository.getImages()

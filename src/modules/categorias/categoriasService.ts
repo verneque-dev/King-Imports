@@ -1,7 +1,6 @@
 import { CategoriasRepository } from "./categoriasRepository";
 import { CategoriasSchema } from "./categorias.schema";
 import { AppError } from "@/shared/errors/AppError";
-import { NextRequest } from "next/server";
 
 export const CategoriasService = {
   getCategorias: async function (id?: string) {
@@ -10,7 +9,7 @@ export const CategoriasService = {
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const categoria = CategoriasRepository.getCategoriasById(parsed.data.id)
+      const categoria = await CategoriasRepository.getCategoriasById(parsed.data.id)
       if (!categoria) {
         throw new AppError("Categoria não encontrada", 404)
       }

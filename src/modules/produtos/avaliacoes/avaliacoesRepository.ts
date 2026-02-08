@@ -22,7 +22,7 @@ export const AvaliacoesRepository = {
     return avaliacoes
   },
 
-  getAvliacoesById: async function (id_avaliacao: number) {
+  getAvaliacoesById: async function (id_avaliacao: number) {
     const avaliacao = await prisma.produtos_avaliacoes.findUnique({
       where: {
         id_avaliacao: id_avaliacao
@@ -38,6 +38,18 @@ export const AvaliacoesRepository = {
       }
     })
     return avaliacoes
+  },
+
+  getResumoPorProduto: async function (id: number) {
+    const resumo = await prisma.produtos_avaliacoes.aggregate({
+      where: {
+        id_produto: id,
+        aprovado: true
+      },
+      _avg: { nota_avaliacao: true },
+      _count: { nota_avaliacao: true }
+    })
+    return resumo
   },
 
   createAvaliacao: async function (body: Avaliacao) {
