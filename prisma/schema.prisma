@@ -48,7 +48,7 @@ model produtos_avaliacoes {
 
 model carrinho {
   id_carrinho Int      @id @default(autoincrement())
-  token       String
+  token       String   @unique
   created_at  DateTime @default(now())
 
   carrinho_itens carrinho_itens[]
@@ -65,8 +65,9 @@ model carrinho_itens {
   produtos produtos @relation(fields: [id_produto], references: [id_produtos])
 }
 
-model admin {
-  id_admin   Int    @id @default(autoincrement())
-  email      String @unique
-  senha_hash String
+model users {
+  id_user         Int    @id @default(autoincrement())
+  email_user      String @unique
+  senha_hash_user String
+  tipo_users      String @default("cliente")
 }
