@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ProdutosService } from "../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
+import { authAdmin } from "@/middlewares/authAdminMiddleware";
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,9 +18,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = authAdmin(req)
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
     const body = await req.json()
     const produto = await ProdutosService.createProduto(body)
-    return NextResponse.json({data: produto, message: "Produto criado com sucesso" }, { status: 201 })
+    return NextResponse.json({ data: produto, message: "Produto criado com sucesso" }, { status: 201 })
   }
   catch (err) {
     if (err instanceof AppError) {
@@ -31,6 +36,10 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    const auth = authAdmin(req)
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
     const body = await req.json()
     const produto = await ProdutosService.updateProduto(body)
     return NextResponse.json({ data: produto, message: "Produto atualizado com sucesso" }, { status: 200 })

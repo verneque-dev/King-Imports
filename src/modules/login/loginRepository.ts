@@ -9,5 +9,17 @@ export const LoginRepository = {
       }
     })
     return user
+  },
+
+  getHash: async function (email: string) {
+    const hash = prisma.users.findUnique({
+      select: {
+        senha_hash_user: true
+      },
+      where: {
+        email_user: email
+      }
+    })
+    return hash
   }
 }

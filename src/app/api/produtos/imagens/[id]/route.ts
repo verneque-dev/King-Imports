@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ProdutosService } from "../../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
 import { ImagensService } from "@/modules/produtos/imagens/imagensService";
+import { authAdmin } from "@/middlewares/authAdminMiddleware";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
@@ -19,6 +19,10 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const auth = authAdmin(req)
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
     const { id } = await context.params
     const image = await ImagensService.deleteImage(id)
     return NextResponse.json({ data: image, message: "Imagem deletada com sucesso" }, { status: 200 })

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ProdutosService } from "../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
 import { ImagensService } from "@/modules/produtos/imagens/imagensService";
+import { authAdmin } from "@/middlewares/authAdminMiddleware";
 
 export async function GET() {
   try {
@@ -18,6 +19,10 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = authAdmin(req)
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
     const body = await req.json()
     const image = await ImagensService.uploadImage(body)
     return NextResponse.json({ data: image, message: "Upload da imagem feito com sucesso" }, { status: 200 })
