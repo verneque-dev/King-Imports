@@ -50,8 +50,17 @@ export const CarrinhoRepository = {
   },
 
   createCarrinhoItem: async function (body: CarrinhoItem) {
-    const item = await prisma.carrinho_itens.create({
-      data:{
+    const item = await prisma.carrinho_itens.upsert({
+      where: {
+        id_carrinho_id_produto: {
+          id_produto: body.id_produto,
+          id_carrinho: body.id_carrinho
+        }
+      },
+      update: {
+        quantidade_itens: { increment: body.quantidade_itens }
+      },
+      create :{
         quantidade_itens: body.quantidade_itens,
         id_produto: body.id_produto,
         id_carrinho: body.id_carrinho

@@ -2,6 +2,9 @@ import { AppError } from "@/shared/errors/AppError"
 import { SchemaCarrinho } from "./carrinho.schema"
 import { CarrinhoRepository } from "./carrinhoRepository"
 import { randomUUID } from "crypto"
+import { ProdutosRepository } from "../produtos/produtosRepository"
+import { Decimal } from "@prisma/client/runtime/client"
+import { number } from "zod"
 
 
 export const CarrinhoService = {
@@ -52,9 +55,36 @@ export const CarrinhoService = {
     }
     const carrinho = await CarrinhoRepository.getCarrinhoByToken(parsed.data.token)
     if (!carrinho) {
-      throw new AppError("carrinho não encontrado", 404)
+      throw new AppError("Carrinho não encontrado", 404)
     }
     const item = await CarrinhoRepository.deleteCarrinhoItem(carrinho.id_carrinho, parsed.data.id_item)
     return item
+  },
+
+  finalizarPedido: async function (token: string) {
+    const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
+    if (!carrinho) {
+      throw new AppError("Carrinho não encontrado", 404)
+    }
+    const numero = "5511998406942"
+    let mensagem = `Pedido:`
+    let total = 0
+    
+    for (const item of carrinho.carrinho_itens) {
+      const produto = await ProdutosRepository.getProdutosById(item.id_produto)
+      if (!produto) {
+        continue
+      }
+      const price = Number(produto.preco_produtos)
+      mensagem += `
+${produto.nome_produtos} - ${price} R$`
+      total += price
+    }
+    mensagem += `
+
+Valor total: ${total} R$`
+    const url = encodeURIComponent(mensagem)
+    const whatsappUrl = `https://wa.me/${numero}?text=${url}`
+    return whatsappUrl
   }
 }

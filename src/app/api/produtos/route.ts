@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }
+    if (typeof auth !== "string" && auth.tipo !== "adm") {
+      return NextResponse.json({ message: "Você não tem permissão para acessar essa rota" })
+    }
     const body = await req.json()
     const produto = await ProdutosService.createProduto(body)
     return NextResponse.json({ data: produto, message: "Produto criado com sucesso" }, { status: 201 })

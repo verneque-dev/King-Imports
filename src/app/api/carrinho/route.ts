@@ -9,9 +9,9 @@ export async function GET(req: NextRequest) {
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
 
@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
 
@@ -37,9 +37,9 @@ export async function DELETE(req: NextRequest) {
   }
   catch (err) {
     if (err instanceof AppError) {
-      return NextResponse.json({ erro: err.message }, { status: err.status })
+      return NextResponse.json({ message: err.message }, { status: err.status })
     }
     console.log(err)
-    return NextResponse.json({ erro: "Erro interno no servidor" }, { status: 500 })
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }

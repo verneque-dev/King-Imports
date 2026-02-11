@@ -63,6 +63,7 @@ model carrinho_itens {
 
   carrinho carrinho @relation(fields: [id_carrinho], references: [id_carrinho], onDelete: Cascade)
   produtos produtos @relation(fields: [id_produto], references: [id_produtos])
+  @@unique([id_carrinho, id_produto])
 }
 
 model users {
