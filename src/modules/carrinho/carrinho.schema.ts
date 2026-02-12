@@ -2,7 +2,6 @@ import { z } from "zod"
 
 export const SchemaCarrinho = {
   deleteCarrinho: z.object({
-    token: z.string(),
     id_item: z.coerce.number()
   }),
 
@@ -12,7 +11,6 @@ export const SchemaCarrinho = {
 
   postCarrinho: z.object({
     quantidade_itens: z.number().positive(),
-    id_produto: z.number().positive(),
-    token: z.string().optional()
+    id_produto: z.number().positive()
   })
 }

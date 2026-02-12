@@ -18,11 +18,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }
-    if (typeof auth !== "string" && auth.tipo !== "adm") {
+    if (typeof auth !== "string" && auth.tipo !== "admin") {
       return NextResponse.json({ message: "Você não tem permissão para acessar essa rota" })
     }
     const body = await req.json()
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }

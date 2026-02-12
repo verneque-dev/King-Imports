@@ -18,7 +18,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }

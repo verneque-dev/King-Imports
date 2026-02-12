@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ProdutosService } from "../../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
 import { ImagensService } from "@/modules/produtos/imagens/imagensService";
 import { authAdmin } from "@/middlewares/authAdminMiddleware";
@@ -19,7 +18,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }

@@ -2,6 +2,7 @@ import { LoginService } from "@/modules/login/loginService";
 import { AppError } from "@/shared/errors/AppError";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"
+import { cookies } from "next/headers";
 
 
 export async function POST(req: NextRequest) {
@@ -13,7 +14,14 @@ export async function POST(req: NextRequest) {
       tipo: user.tipo_users
     }
     const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: "10d" })
-    return NextResponse.json({ token: token }, { status: 200 })
+    const cookieStore = await cookies()
+    cookieStore.set("token_admin", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/"
+    })
+    return NextResponse.json({ message: "Login bem sucedido" }, { status: 200 })
   }
   catch (err) {
     if (err instanceof AppError) {

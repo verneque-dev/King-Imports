@@ -1,12 +1,17 @@
 import { CarrinhoService } from "@/modules/carrinho/carrinhoService";
 import { AppError } from "@/shared/errors/AppError";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
-    const body = await req.json()
-    const whatsappUrl = await CarrinhoService.finalizarPedido(body.token)
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token_carrinho")?.value
+    if (!token) {
+      return NextResponse.json({ message: "Carrinhonão encontrado" }, { status: 404 })
+    }
+    const whatsappUrl = await CarrinhoService.finalizarPedido(token)
     return NextResponse.json({ url: whatsappUrl }, { status: 200 })
   }
   catch (err) {

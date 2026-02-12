@@ -3,36 +3,46 @@ import { SchemaCarrinho } from "./carrinho.schema"
 import { CarrinhoRepository } from "./carrinhoRepository"
 import { randomUUID } from "crypto"
 import { ProdutosRepository } from "../produtos/produtosRepository"
-import { Decimal } from "@prisma/client/runtime/client"
-import { number } from "zod"
+import { cookies } from "next/headers"
+import { authAdmin } from "@/middlewares/authAdminMiddleware"
 
 
 export const CarrinhoService = {
   getCarrinhos: async function (url: string) {
     const { searchParams } = new URL(url)
-    const token = searchParams.get("token")
-    if (token) {
+    const getByToken = searchParams.get("token")
+    if (getByToken === "true") {
+      const cookieStore = await cookies()
+      const token = cookieStore.get("token_carrinho")?.value
+      if (!token) {
+        throw new AppError("Carrinho não encontrado", 404)
+      }
       const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
       if (!carrinho) {
-        throw new AppError("carrinho não encontrado", 404)
+        throw new AppError("Carrinho não encontrado", 404)
       }
       return carrinho
+    }
+    const auth = await authAdmin()
+    if (!auth) {
+      throw new AppError("Pá... acesso negado", 401)
     }
     const carrinhos = await CarrinhoRepository.getCarrinho()
     return carrinhos
   },
 
-  postCarrinho: async function (body: { quantidade_itens: number, id_produto: number, token?: string }) {
+  postCarrinho: async function (body: { quantidade_itens: number, id_produto: number }) {
+    const cookieStore = await cookies()
+    let token = cookieStore.get("token_carrinho")?.value
+    if (!token) {
+      token = randomUUID()
+      await CarrinhoRepository.createCarrinho(token)
+    }
     const parsed = SchemaCarrinho.postCarrinho.safeParse(body)
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 404)
     }
-    if (!parsed.data.token) {
-      const token = randomUUID()
-      await CarrinhoRepository.createCarrinho(token)
-      parsed.data.token = token
-    }
-    const carrinhoId = await CarrinhoRepository.getCarrinhoByToken(parsed.data.token)
+    const carrinhoId = await CarrinhoRepository.getCarrinhoByToken(token)
     if (!carrinhoId) {
       throw new AppError("Carrinho não encontrado", 404)
     }
@@ -42,18 +52,23 @@ export const CarrinhoService = {
       quantidade_itens: parsed.data.quantidade_itens,
       id_carrinho: carrinhoId.id_carrinho
     }
-    
+
     await CarrinhoRepository.createCarrinhoItem(data)
-    const carrinho = await CarrinhoRepository.getCarrinhoByToken(parsed.data.token)
+    const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
     return carrinho
   },
 
-  deleteCarrinhoItem: async function (body: { token: string, id_item: string }) {
+  deleteCarrinhoItem: async function (body: { id_item: string }) {
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token_carrinho")?.value
+    if (!token) {
+      throw new AppError("Carrinho não encontrado", 404)
+    }
     const parsed = SchemaCarrinho.deleteCarrinho.safeParse(body)
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 404)
     }
-    const carrinho = await CarrinhoRepository.getCarrinhoByToken(parsed.data.token)
+    const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
     if (!carrinho) {
       throw new AppError("Carrinho não encontrado", 404)
     }
@@ -62,6 +77,9 @@ export const CarrinhoService = {
   },
 
   finalizarPedido: async function (token: string) {
+    if (!token) {
+      throw new AppError("Carrinho não encontrado", 401)
+    }
     const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
     if (!carrinho) {
       throw new AppError("Carrinho não encontrado", 404)
@@ -69,7 +87,7 @@ export const CarrinhoService = {
     const numero = "5511998406942"
     let mensagem = `Pedido:`
     let total = 0
-    
+
     for (const item of carrinho.carrinho_itens) {
       const produto = await ProdutosRepository.getProdutosById(item.id_produto)
       if (!produto) {

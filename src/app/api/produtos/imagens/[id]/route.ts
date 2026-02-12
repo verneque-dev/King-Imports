@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const auth = authAdmin(req)
+    const auth = await authAdmin()
     if (!auth) {
       return NextResponse.json({ message: "Token inválido" }, { status: 401 })
     }
