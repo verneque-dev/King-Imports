@@ -3,6 +3,7 @@ import { SchemaProdutos } from "./produtos.schema"
 import { AppError } from "@/shared/errors/AppError"
 import { CategoriasRepository } from "../categorias/categoriasRepository"
 import { AvaliacoesRepository } from "./avaliacoes/avaliacoesRepository"
+import { avaliacoesMediaProdutos } from "@/utils/mediaProdutosUtils"
 
 export const ProdutosService = {
   getProdutos: async function (url: string, id?: string) {
@@ -37,7 +38,8 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
       const produtos = await ProdutosRepository.getProdutosByName(search)
-      return produtos
+      const listProdutos = avaliacoesMediaProdutos(produtos)
+      return listProdutos
     }
 
     if (page && limit) {
@@ -46,11 +48,13 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
       const produtos = await ProdutosRepository.getProdutosPages(parsed.data.page, parsed.data.limit)
-      return produtos
+      const listProdutos = avaliacoesMediaProdutos(produtos)
+      return listProdutos
     }
 
     const produtos = await ProdutosRepository.getProdutos()
-    return produtos
+    const listProdutos = avaliacoesMediaProdutos(produtos)
+    return listProdutos
   },
 
   createProduto: async function (body: unknown) {

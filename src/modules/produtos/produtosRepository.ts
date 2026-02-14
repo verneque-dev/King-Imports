@@ -8,12 +8,6 @@ interface Produto {
   produto_id?: number
 }
 
-interface Images {
-  url_image: string,
-  produto_id: number,
-  principal: boolean,
-}
-
 export const ProdutosRepository = {
   getProdutos: async function () {
     const listProdutos = await prisma.produtos.findMany({
@@ -23,9 +17,15 @@ export const ProdutosRepository = {
             principal: true
           },
           take: 1
+        },
+        produtos_avaliacoes: {
+          where: {
+            aprovado: true
+          }
         }
-      }
+      },
     })
+    
     return listProdutos
   },
 
@@ -53,6 +53,11 @@ export const ProdutosRepository = {
             principal: true
           },
           take: 1
+        },
+        produtos_avaliacoes: {
+          where: {
+            aprovado: true
+          }
         }
       },
       where: {
@@ -72,6 +77,11 @@ export const ProdutosRepository = {
             principal: true
           },
           take: 1
+        },
+        produtos_avaliacoes: {
+          where: {
+            aprovado: true
+          }
         }
       },
       skip: (page - 1) * limit,
