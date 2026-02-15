@@ -3,23 +3,25 @@ import Link from "next/link"
 import { Produto } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
 
+type Props = {
+  searchParams: Promise<{ search: string }>
+}
 
-export default async function Home() {
-  const res = await fetch(`${urlApi}/api/produtos/?page=1&take=5`, {
+export default async function Produtos({ searchParams }: Props) {
+  const { search } = await searchParams
+  const query = search ? search : ""
+  
+  const res = await fetch(`${urlApi}/api/produtos/?search=${query}`, {
     cache: "no-store"
   })
   const produtos: Produto[] = await res.json()
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 shadow-lg">
-      <div className="w-full bg-[#FFC13B] rounded-lg flex mb-8 items-center
-      justify-center mx-auto p-3">
-        <p className="text-[80%] sm:text-[120%] font-bold text-center text-white"> Confira os produtos em destaque! </p>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {/* cards */}
         {produtos.map((produto) => {
           return (
-            <Link href={`/produtos/${produto.id_produtos}`} key={produto.id_produtos}>
+            <Link href={`/${produto.id_produtos}`} key={produto.id_produtos}>
               <div className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform">
                 <div className="aspect-8/5 relative bg-gray-100">
                   <Image
@@ -30,7 +32,7 @@ export default async function Home() {
                   />
                 </div>
 
-                <div className="flex flex-col flex-1 p-2 bg-white">
+                <div className="flex flex-col flex-1 p-2">
                   <p className="text-base font-medium line-clamp-2 min-h-11 max-h-11"> {produto.nome_produtos} </p>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-1"> {produto.desc_produtos} </p>
 

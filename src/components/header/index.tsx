@@ -13,7 +13,7 @@ export function Header() {
           className="w-full h-full"
         />
       </div>
-      <form action="/" method="GET" className="bg-white mb-2 h-7 w-[40%] flex relative
+      <form action="/produtos" method="GET" className="bg-white mb-2 h-7 w-[40%] flex relative
       border border-white focus-within:border-amber-300">
         <input className="h-full w-full pl-2 focus:outline-none focus:ring-0" type="text" placeholder="buscar..." name="search" />
         <div className="h-full w-7 bg-white mr-2 p-0.5">
@@ -27,7 +27,7 @@ export function Header() {
         </div>
       </form>
       <Link href="/" className="text-white text-[100%] mb-2"> home </Link>
-      <Link href="/" className="text-white text-[100%] mb-2"> produtos </Link>
+      <Link href="/produtos" className="text-white text-[100%] mb-2"> produtos </Link>
       <Link href="/" className="text-white text-[100%] mb-2"> sobre </Link>
       <Link href="/" className="h-8 w-8 mb-2">
         <Image
