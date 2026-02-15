@@ -5,11 +5,15 @@ export const SchemaProdutos = {
     search: z.string()
   }),
 
+  categoriaNameSchema: z.object({
+    categoria: z.string()
+  }),
+
   getProdutoByIdSchema: z.object({
     id: z.coerce.number().int().positive()
   }),
 
-  getProdutoByPageSchema: z.object({
+  PageSchema: z.object({
     page: z.coerce.number().int().positive(),
     limit: z.coerce.number().int().positive()
   }),

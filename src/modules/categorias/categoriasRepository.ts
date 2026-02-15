@@ -15,6 +15,15 @@ export const CategoriasRepository = {
     return categoria
   },
 
+  getCategoriasByName: async function (name: string) {
+    const categoria = await prisma.categorias.findUnique({
+      where: {
+        nome_categorias: name
+      }
+    })
+    return categoria
+  },
+
   createCategorias: async function (name: string) {
     const categoria = await prisma.categorias.create({
       data: {

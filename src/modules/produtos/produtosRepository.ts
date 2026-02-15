@@ -9,7 +9,7 @@ interface Produto {
 }
 
 export const ProdutosRepository = {
-  getProdutos: async function () {
+  getProdutos: async function (page: number = 1, limit: number = 20) {
     const listProdutos = await prisma.produtos.findMany({
       include: {
         produtos_images: {
@@ -24,8 +24,15 @@ export const ProdutosRepository = {
           }
         }
       },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        produtos_avaliacoes: {
+          _count: "desc"
+        }
+      }
     })
-    
+
     return listProdutos
   },
 
@@ -45,7 +52,7 @@ export const ProdutosRepository = {
     return listProdutos
   },
 
-  getProdutosByName: async function (search: string) {
+  getProdutosByName: async function (search: string, page: number = 1, limit: number = 20) {
     const listProdutos = await prisma.produtos.findMany({
       include: {
         produtos_images: {
@@ -64,13 +71,26 @@ export const ProdutosRepository = {
         nome_produtos: {
           contains: search,
         }
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        produtos_avaliacoes: {
+          _count: "desc"
+        }
       }
     })
     return listProdutos
   },
 
-  getProdutosPages: async function (page: number, limit: number) {
+  getProdutosByCategoria: async function (id: number, page: number = 1, limit: number = 20, search: string = "") {
     const listProdutos = await prisma.produtos.findMany({
+      where: {
+        id_categoria: id,
+        nome_produtos: {
+          contains: search
+        }
+      },
       include: {
         produtos_images: {
           where: {
@@ -87,7 +107,9 @@ export const ProdutosRepository = {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: {
-        id_produtos: "asc"
+        produtos_avaliacoes: {
+          _count: "desc"
+        }
       }
     })
     return listProdutos

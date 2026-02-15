@@ -11,6 +11,7 @@ export const ProdutosService = {
     const search = searchParams.get("search")
     const page = searchParams.get("page")
     const limit = searchParams.get("limit")
+    const categoria = searchParams.get("categoria")
 
     if (id) {
       const parsedId = SchemaProdutos.getProdutoByIdSchema.safeParse({ id })
@@ -32,10 +33,62 @@ export const ProdutosService = {
       }
     }
 
+    if (categoria) {
+      const parsed = SchemaProdutos.categoriaNameSchema.safeParse({ categoria })
+      if (!parsed.success) {
+        throw new AppError("Dados inválidos", 400)
+      }
+      const categoriaData = await CategoriasRepository.getCategoriasByName(categoria)
+      if (!categoriaData) {
+        throw new AppError("Categoria não encontrada", 404)
+      }
+
+      if (search) {
+        const parsedSearch = SchemaProdutos.getProdutoByNameSchema.safeParse({ search })
+        if (!parsedSearch.success) {
+          throw new AppError("Dados inválidos", 400)
+        }
+        if (page && limit) {
+          const parsed = SchemaProdutos.PageSchema.safeParse({ page, limit })
+          if (!parsed.success) {
+            throw new AppError("Dados inválidos", 400)
+          }
+          const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit, search)
+          const listProdutos = avaliacoesMediaProdutos(produtos)
+          return listProdutos
+        }
+        const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, undefined, undefined, search)
+        const listProdutos = avaliacoesMediaProdutos(produtos)
+        return listProdutos
+      }
+
+      if (page && limit) {
+        const parsed = SchemaProdutos.PageSchema.safeParse({ page, limit })
+        if (!parsed.success) {
+          throw new AppError("Dados inválidos", 400)
+        }
+        const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit)
+        const listProdutos = avaliacoesMediaProdutos(produtos)
+        return listProdutos
+      }
+      const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias)
+      const listProdutos = avaliacoesMediaProdutos(produtos)
+      return listProdutos
+    }
+
     if (search) {
       const parsedSearch = SchemaProdutos.getProdutoByNameSchema.safeParse({ search })
       if (!parsedSearch.success) {
         throw new AppError("Dados inválidos", 400)
+      }
+      if (page && limit) {
+        const parsed = SchemaProdutos.PageSchema.safeParse({ page, limit })
+        if (!parsed.success) {
+          throw new AppError("Dados inválidos", 400)
+        }
+        const produtos = await ProdutosRepository.getProdutosByName(search, parsed.data.page, parsed.data.limit)
+        const listProdutos = avaliacoesMediaProdutos(produtos)
+        return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByName(search)
       const listProdutos = avaliacoesMediaProdutos(produtos)
@@ -43,11 +96,11 @@ export const ProdutosService = {
     }
 
     if (page && limit) {
-      const parsed = SchemaProdutos.getProdutoByPageSchema.safeParse({ page, limit })
+      const parsed = SchemaProdutos.PageSchema.safeParse({ page, limit })
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
-      const produtos = await ProdutosRepository.getProdutosPages(parsed.data.page, parsed.data.limit)
+      const produtos = await ProdutosRepository.getProdutos(parsed.data.page, parsed.data.limit)
       const listProdutos = avaliacoesMediaProdutos(produtos)
       return listProdutos
     }

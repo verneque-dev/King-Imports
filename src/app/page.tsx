@@ -2,22 +2,24 @@ import Image from "next/image"
 import Link from "next/link"
 import { Produto } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
+import { Carrosel } from "@/components/carrosel"
 
 
 export default async function Home() {
-  const res = await fetch(`${urlApi}/api/produtos/?page=1&take=5`, {
+  const res = await fetch(`${urlApi}/api/produtos/`, {
     cache: "no-store"
   })
   const produtos: Produto[] = await res.json()
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 shadow-lg">
+      <Carrosel/>
       <div className="w-full bg-[#FFC13B] rounded-lg flex mb-8 items-center
       justify-center mx-auto p-3">
-        <p className="text-[80%] sm:text-[120%] font-bold text-center text-white"> Confira os produtos em destaque! </p>
+        <p className="text-[100%] sm:text-[120%] font-bold text-center text-white"> Confira os produtos em destaque! </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {/* cards */}
-        {produtos.map((produto) => {
+        {produtos.slice(0, 4).map((produto) => {
           return (
             <Link href={`/produtos/${produto.id_produtos}`} key={produto.id_produtos}>
               <div className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform">
