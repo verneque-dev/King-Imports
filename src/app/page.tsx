@@ -11,7 +11,7 @@ export default async function Home() {
   })
   const produtos: Produto[] = await res.json()
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
+    <div className="max-w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
       <Carrosel/>
       <div className="w-full bg-[#FFC13B] rounded-lg flex mb-8 items-center
       justify-center mx-auto p-3">
@@ -25,7 +25,7 @@ export default async function Home() {
               <div className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform">
                 <div className="aspect-8/5 relative bg-gray-100">
                   <Image
-                    src="/logo.jpeg"
+                    src={produto.produtos_images[0] ? produto.produtos_images[0].images_url : "/logo.jpeg"}
                     alt=""
                     fill
                     className="w-full h-full object-cover"
