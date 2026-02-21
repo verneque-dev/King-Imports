@@ -4,6 +4,7 @@ import { urlApi } from "@/lib/api"
 import { StarsBar } from "@/components/starsMedia";
 import { MdAccountCircle } from "react-icons/md";
 import { FormAddCarrinho } from "@/components/formAddCarrinho"
+import { FormAvaliacao } from "@/components/formAvaliacao";
 
 export default async function ProdutoDetails(context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
@@ -15,7 +16,6 @@ export default async function ProdutoDetails(context: { params: Promise<{ id: st
   const resAvaliacoes = await fetch(`${urlApi}/api/produtos/avaliacoes/${id}`, {
     cache: "no-store"
   })
-
   const avaliacoes: ProdutoAvaliacoes[] = await resAvaliacoes.json()
 
   return (
@@ -38,20 +38,26 @@ export default async function ProdutoDetails(context: { params: Promise<{ id: st
         </div>
       </div>
       <div className="flex flex-col w-full p-8">
+        <FormAvaliacao produtoId={Number(id)}/>
         <div className="w-full bg-yellow-300 rounded-lg flex mb-8 items-center
       justify-center mx-auto p-3">
           <p className="text-[100%] sm:text-[120%] font-bold text-center text-white"> Confira as avaliações do produto </p>
         </div>
         {avaliacoes.map((avaliacao) => {
+          const dataObj = new Date(avaliacao.created_at);
+
+          const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
+            timeZone: 'UTC'
+          });
           return (
-            <div className="flex flex-col w-full justify-center" key={avaliacao.id_avaliacao}>
+            <div className="flex flex-col w-full justify-center mb-8" key={avaliacao.id_avaliacao}>
               <div className="flex items-center gap-2">
                 <MdAccountCircle size={40} />
                 <p className="text-xl font-semibold"> {avaliacao.nome_user} </p>
               </div>
-              <div className="flex">
+              <div className="flex gap-2">
                 <StarsBar media={avaliacao.nota_avaliacao} />
-                <p>há algum tempo </p>
+                <p> {dataFormatada} </p>
               </div>
               <div className="flex items-center mt-2 pl-1">
                 <p className="text-lg"> {avaliacao.comentario_avaliacao} </p>

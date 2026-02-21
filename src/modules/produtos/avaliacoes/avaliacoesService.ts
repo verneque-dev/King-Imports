@@ -2,22 +2,35 @@ import { AppError } from "@/shared/errors/AppError"
 import { SchemaAvaliacoes } from "./avaliacoes.schema"
 import { AvaliacoesRepository } from "./avaliacoesRepository"
 import { ProdutosRepository } from "../produtosRepository"
+import { cookies } from "next/headers"
+import { randomUUID } from "crypto"
 
 
 export const AvaliacoesService = {
   getAvaliacoes: async function (url: string, id?: string) {
     const { searchParams } = new URL(url)
     const aprovado = searchParams.get("aprovado")
+    const getByToken = searchParams.get("token")
 
     if (id) {
       const parsed = SchemaAvaliacoes.id.safeParse({ id })
       if (!parsed.success) {
         throw new AppError("Dados inválidos", 400)
       }
+      if (getByToken === "true") {
+        const cookieStore = await cookies()
+        const token = cookieStore.get("token_session")?.value
+        if (!token) {
+          throw new AppError("Token não fornecido", 401)
+        }
+        const avaliacoes = await AvaliacoesRepository.getAvaliacoesByTokenId(parsed.data.id, token)
+        return avaliacoes
+      }
       const avaliacao = await AvaliacoesRepository.getAvaliacoesPorProduto(parsed.data.id)
       if (!avaliacao) {
         throw new AppError("Avaliacao não encontrada", 404)
       }
+
       return avaliacao
     }
 
@@ -27,7 +40,7 @@ export const AvaliacoesService = {
       }
       const status = aprovado === "true" ? true : false
 
-      const avaliacoes = await AvaliacoesRepository.getAvaliacoesByQuery(status)
+      const avaliacoes = await AvaliacoesRepository.getAvaliacoesByAprovado(status)
       return avaliacoes
     }
     const avaliacoes = await AvaliacoesRepository.getAvaliacoes()
@@ -43,11 +56,21 @@ export const AvaliacoesService = {
     if (!verifyIdProduto) {
       throw new AppError("Produto não encontrado", 404)
     }
-    const avaliacao = await AvaliacoesRepository.createAvaliacao(parsed.data)
+    const cookieStore = await cookies()
+    let token = cookieStore.get("token_session")?.value
+    if (!token) {
+      token = randomUUID()
+    }
+    const avaliacao = await AvaliacoesRepository.createAvaliacao(parsed.data, token)
     return avaliacao
   },
 
   deleteAvaliacao: async function (id: string) {
+    const cookieStore = await cookies()
+    const token = cookieStore.get("token_session")?.value
+    if (!token) {
+      throw new AppError("Token não fornecido", 401)
+    }
     const parsed = SchemaAvaliacoes.id.safeParse({ id })
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
@@ -56,7 +79,7 @@ export const AvaliacoesService = {
     if (!verifyIdAvaliacao) {
       throw new AppError("Avaliação não encontrada", 404)
     }
-    const avaliacao = await AvaliacoesRepository.deleteAvaliacao(parsed.data.id)
+    const avaliacao = await AvaliacoesRepository.deleteAvaliacao(parsed.data.id, token)
     return avaliacao
   },
 

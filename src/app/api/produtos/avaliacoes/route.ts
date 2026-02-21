@@ -1,5 +1,6 @@
 import { AvaliacoesService } from "@/modules/produtos/avaliacoes/avaliacoesService"
 import { AppError } from "@/shared/errors/AppError"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 
@@ -17,9 +18,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
   try {
+    const body = await req.json()
     const avaliacao = await AvaliacoesService.createAvaliacao(body)
+    const cookieStore = await cookies()
+    cookieStore.set("token_session", avaliacao!.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/"
+    })
     return NextResponse.json({ data: avaliacao, message: "Avaliação criada com sucesso" }, { status: 201 })
   }
   catch (err) {

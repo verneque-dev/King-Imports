@@ -12,7 +12,7 @@ export async function authAdmin() {
     const decode = jwt.verify(token, process.env.JWT_SECRET!)
     return decode
   }
-  catch (err) {
+  catch {
     throw new AppError("Token inválido", 401)
   }
 }

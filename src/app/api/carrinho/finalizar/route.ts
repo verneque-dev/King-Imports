@@ -7,9 +7,9 @@ import { NextResponse } from "next/server";
 export async function POST() {
   try {
     const cookieStore = await cookies()
-    const token = cookieStore.get("token_carrinho")?.value
+    const token = cookieStore.get("token_session")?.value
     if (!token) {
-      return NextResponse.json({ message: "Carrinhonão encontrado" }, { status: 404 })
+      return NextResponse.json({ message: "Carrinho não encontrado" }, { status: 404 })
     }
     const whatsappUrl = await CarrinhoService.finalizarPedido(token)
     return NextResponse.json({ url: whatsappUrl }, { status: 200 })

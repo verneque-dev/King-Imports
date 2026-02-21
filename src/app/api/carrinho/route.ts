@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const carrinho = await CarrinhoService.postCarrinho(body)
     const cookieStore = await cookies()
-    cookieStore.set("token_carrinho", carrinho!.token, {
+    cookieStore.set("token_session", carrinho!.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

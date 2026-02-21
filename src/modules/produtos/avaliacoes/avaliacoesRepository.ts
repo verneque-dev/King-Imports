@@ -9,14 +9,22 @@ interface Avaliacao {
 
 export const AvaliacoesRepository = {
   getAvaliacoes: async function () {
-    const avaliacoes = await prisma.produtos_avaliacoes.findMany()
+    const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      orderBy: {
+        created_at: "desc"
+      }
+    })
     return avaliacoes
   },
 
   getAvaliacoesPorProduto: async function (id_produto: number) {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
       where: {
-        id_produto: id_produto
+        id_produto: id_produto,
+        aprovado: true
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
     return avaliacoes
@@ -26,16 +34,32 @@ export const AvaliacoesRepository = {
     const avaliacao = await prisma.produtos_avaliacoes.findUnique({
       where: {
         id_avaliacao: id_avaliacao,
-        aprovado: true
       }
     })
     return avaliacao
   },
 
-  getAvaliacoesByQuery: async function (aprovado: boolean) {
+  getAvaliacoesByTokenId: async function (id: number, token: string) {
+    const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      where: {
+        token: token,
+        id_produto: id
+      },
+      orderBy: {
+        aprovado: "desc",
+        created_at: "desc"
+      }
+    })
+    return avaliacoes
+  },
+
+  getAvaliacoesByAprovado: async function (aprovado: boolean) {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
       where: {
         aprovado: aprovado
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
     return avaliacoes
@@ -53,22 +77,24 @@ export const AvaliacoesRepository = {
     return resumo
   },
 
-  createAvaliacao: async function (body: Avaliacao) {
+  createAvaliacao: async function (body: Avaliacao, token: string) {
     const avaliacao = await prisma.produtos_avaliacoes.create({
       data: {
         nome_user: body.nome_user,
         nota_avaliacao: body.nota_avaliacao,
         comentario_avaliacao: body.comentario_avaliacao,
-        id_produto: body.id_produto
+        id_produto: body.id_produto,
+        token: token
       }
     })
     return avaliacao
   },
 
-  deleteAvaliacao: async function (id: number) {
+  deleteAvaliacao: async function (id: number, token: string) {
     const avaliacao = await prisma.produtos_avaliacoes.delete({
       where: {
-        id_avaliacao: id
+        id_avaliacao: id,
+        token: token
       }
     })
     return avaliacao

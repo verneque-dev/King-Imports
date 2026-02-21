@@ -36,6 +36,7 @@ model produtos_images {
 
 model produtos_avaliacoes {
   id_avaliacao         Int      @id @default(autoincrement())
+  token                String
   nome_user            String   @db.VarChar(50)
   nota_avaliacao       Int
   comentario_avaliacao String?  @db.VarChar(100)
@@ -63,6 +64,7 @@ model carrinho_itens {
 
   carrinho carrinho @relation(fields: [id_carrinho], references: [id_carrinho], onDelete: Cascade)
   produtos produtos @relation(fields: [id_produto], references: [id_produtos])
+
   @@unique([id_carrinho, id_produto])
 }
 

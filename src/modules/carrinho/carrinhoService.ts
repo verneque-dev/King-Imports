@@ -13,7 +13,7 @@ export const CarrinhoService = {
     const getByToken = searchParams.get("token")
     if (getByToken === "true") {
       const cookieStore = await cookies()
-      const token = cookieStore.get("token_carrinho")?.value
+      const token = cookieStore.get("token_session")?.value
       if (!token) {
         throw new AppError("Carrinho não encontrado", 404)
       }
@@ -33,7 +33,7 @@ export const CarrinhoService = {
 
   postCarrinho: async function (body: { quantidade_itens: number, id_produto: number }) {
     const cookieStore = await cookies()
-    let token = cookieStore.get("token_carrinho")?.value
+    let token = cookieStore.get("token_session")?.value
     if (!token) {
       token = randomUUID()
       await CarrinhoRepository.createCarrinho(token)
@@ -61,7 +61,7 @@ export const CarrinhoService = {
 
   deleteCarrinhoItem: async function (body: { id_item: string }) {
     const cookieStore = await cookies()
-    const token = cookieStore.get("token_carrinho")?.value
+    const token = cookieStore.get("token_session")?.value
     if (!token) {
       throw new AppError("Carrinho não encontrado", 404)
     }

@@ -9,6 +9,7 @@ export interface Produto {
     nota_avaliacao: number
     aprovado: boolean
     id_produto: number
+    token: string
     id_avaliacao: number
     nome_user: string
     comentario_avaliacao: string | null
@@ -52,4 +53,5 @@ export interface ProdutoAvaliacoes {
   aprovado: boolean
   created_at: Date
   id_produto: number
+  token: string
 }
