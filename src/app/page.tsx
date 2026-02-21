@@ -13,9 +13,9 @@ export default async function Home() {
   return (
     <div className="max-w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
       <Carrosel/>
-      <div className="w-full bg-[#FFC13B] rounded-lg flex mb-8 items-center
+      <div className="w-full bg-yellow-300 rounded-lg flex mb-8 items-center
       justify-center mx-auto p-3">
-        <p className="text-[100%] sm:text-[120%] font-bold text-center text-white"> Confira os produtos em destaque! </p>
+        <p className="text-[100%] sm:text-[120%] font-bold text-center text-white"> Confira os produtos em destaque </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {/* cards */}

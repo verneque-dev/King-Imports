@@ -23,13 +23,13 @@ export const ProdutosService = {
         throw new AppError("Produto não encontrado", 404)
       }
       const resumo = await AvaliacoesRepository.getResumoPorProduto(parsedId.data.id)
-      const media = resumo._avg.nota_avaliacao ?? 0
-      const total = resumo._count.nota_avaliacao
+      const media = Number(resumo._avg.nota_avaliacao?.toFixed(1)) || 0
+      const quantidade = resumo._count.nota_avaliacao
 
       return {
         ...produto,
         media,
-        total
+        quantidade
       }
     }
 

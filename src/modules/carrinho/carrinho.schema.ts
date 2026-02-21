@@ -10,7 +10,7 @@ export const SchemaCarrinho = {
   }),
 
   postCarrinho: z.object({
-    quantidade_itens: z.number().positive(),
-    id_produto: z.number().positive()
+    quantidade_itens: z.coerce.number().positive(),
+    id_produto: z.coerce.number().positive()
   })
 }

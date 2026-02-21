@@ -25,7 +25,8 @@ export const AvaliacoesRepository = {
   getAvaliacoesById: async function (id_avaliacao: number) {
     const avaliacao = await prisma.produtos_avaliacoes.findUnique({
       where: {
-        id_avaliacao: id_avaliacao
+        id_avaliacao: id_avaliacao,
+        aprovado: true
       }
     })
     return avaliacao

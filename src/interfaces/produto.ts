@@ -39,4 +39,17 @@ export interface ProdutoUnico {
     images_url: string
     id_produto: number
   }[]
+
+  media: number
+  quantidade: number
+}
+
+export interface ProdutoAvaliacoes {
+  id_avaliacao: number
+  nome_user: string
+  nota_avaliacao: number
+  comentario_avaliacao: string | null;
+  aprovado: boolean
+  created_at: Date
+  id_produto: number
 }

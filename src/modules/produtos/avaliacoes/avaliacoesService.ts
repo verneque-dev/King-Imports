@@ -5,7 +5,7 @@ import { ProdutosRepository } from "../produtosRepository"
 
 
 export const AvaliacoesService = {
-  getAvaliacoes: async function (url:string, id?: string) {
+  getAvaliacoes: async function (url: string, id?: string) {
     const { searchParams } = new URL(url)
     const aprovado = searchParams.get("aprovado")
 
@@ -72,5 +72,5 @@ export const AvaliacoesService = {
     const { id, aprovado } = parsed.data
     const avaliacao = await AvaliacoesRepository.setStatus(id, aprovado)
     return avaliacao
-  } 
+  }
 }

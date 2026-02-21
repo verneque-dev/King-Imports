@@ -40,8 +40,9 @@ export const CarrinhoService = {
     }
     const parsed = SchemaCarrinho.postCarrinho.safeParse(body)
     if (!parsed.success) {
-      throw new AppError("Dados inválidos", 404)
+      throw new AppError("Dados inválidos", 400)
     }
+
     const carrinhoId = await CarrinhoRepository.getCarrinhoByToken(token)
     if (!carrinhoId) {
       throw new AppError("Carrinho não encontrado", 404)
