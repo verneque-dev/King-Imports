@@ -21,12 +21,16 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
   try {
     const { id } = await context.params 
     const avaliacao = await AvaliacoesService.deleteAvaliacao(id)
-    return NextResponse.json({ data: avaliacao, message: "Avaliacao deletada com sucesso" }, { status: 200 })
+    if (avaliacao.count < 1) {
+      throw new AppError("Falha na autenticação", 401)
+    }
+    return new NextResponse(null, { status: 204 })
   }
   catch (err) {
     if (err instanceof AppError) {
       return NextResponse.json({ message: err.message }, { status: err.status })
     }
+    console.log(err)
     return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }

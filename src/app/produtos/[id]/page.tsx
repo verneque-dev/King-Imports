@@ -39,10 +39,7 @@ export default async function ProdutoDetails(context: { params: Promise<{ id: st
       </div>
       <div className="flex flex-col w-full p-8">
         <FormAvaliacao produtoId={Number(id)}/>
-        <div className="w-full bg-yellow-300 rounded-lg flex mb-8 items-center
-      justify-center mx-auto p-3">
-          <p className="text-[100%] sm:text-[120%] font-bold text-center text-white"> Confira as avaliações do produto </p>
-        </div>
+        
         {avaliacoes.map((avaliacao) => {
           const dataObj = new Date(avaliacao.created_at);
 

@@ -21,7 +21,7 @@ export const AvaliacoesService = {
         const cookieStore = await cookies()
         const token = cookieStore.get("token_session")?.value
         if (!token) {
-          throw new AppError("Token não fornecido", 401)
+          return []
         }
         const avaliacoes = await AvaliacoesRepository.getAvaliacoesByTokenId(parsed.data.id, token)
         return avaliacoes

@@ -46,7 +46,6 @@ export const AvaliacoesRepository = {
         id_produto: id
       },
       orderBy: {
-        aprovado: "desc",
         created_at: "desc"
       }
     })
@@ -91,7 +90,7 @@ export const AvaliacoesRepository = {
   },
 
   deleteAvaliacao: async function (id: number, token: string) {
-    const avaliacao = await prisma.produtos_avaliacoes.delete({
+    const avaliacao = await prisma.produtos_avaliacoes.deleteMany({
       where: {
         id_avaliacao: id,
         token: token
