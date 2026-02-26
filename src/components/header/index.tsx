@@ -39,7 +39,7 @@ export function Header() {
         <Link href="/" className="text-white text-[100%] mb-2"> inicio </Link>
         <Link href="/produtos" className="text-white text-[100%] mb-2"> produtos </Link>
         <Link href="/" className="text-white text-[100%] mb-2"> sobre </Link>
-        <Link href="/" className="h-8 w-8 mb-2">
+        <Link href="/carrinho" className="h-8 w-8 mb-2">
           <Image
             src="/bag.png"
             alt="cart"
@@ -71,7 +71,7 @@ export function Header() {
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1"> <IoHome /> inicio </Link>
           <Link href="/produtos" onClick={() => setOpen(false)} className="flex items-center gap-1"> <PiShoppingBagOpenFill /> produtos </Link>
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1"> <FaPeopleGroup />  sobre </Link>
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1"> <AiFillShopping /> carrinho </Link>
+          <Link href="/carrinho" onClick={() => setOpen(false)} className="flex items-center gap-1"> <AiFillShopping /> carrinho </Link>
         </div>
       </div>
     </div>

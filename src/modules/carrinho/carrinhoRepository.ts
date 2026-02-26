@@ -10,7 +10,11 @@ export const CarrinhoRepository = {
   getCarrinho: async function () {
     const carrinho = await prisma.carrinho.findMany({
       include: {
-        carrinho_itens: true
+        carrinho_itens: {
+          include: {
+            produtos: true
+          }
+        }
       }
     })
     return carrinho
@@ -31,7 +35,19 @@ export const CarrinhoRepository = {
   getCarrinhoByToken: async function (token: string) {
     const carrinho = await prisma.carrinho.findUnique({
       include: {
-        carrinho_itens: true
+        carrinho_itens: {
+          include: {
+            produtos: {
+              include: {
+                produtos_images: {
+                  where: {
+                    principal: true
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       where: {
         token: token
@@ -60,7 +76,7 @@ export const CarrinhoRepository = {
       update: {
         quantidade_itens: { increment: body.quantidade_itens }
       },
-      create :{
+      create: {
         quantidade_itens: body.quantidade_itens,
         id_produto: body.id_produto,
         id_carrinho: body.id_carrinho

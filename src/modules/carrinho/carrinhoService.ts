@@ -63,7 +63,7 @@ export const CarrinhoService = {
     const cookieStore = await cookies()
     const token = cookieStore.get("token_session")?.value
     if (!token) {
-      throw new AppError("Carrinho não encontrado", 404)
+      throw new AppError("Sem autorização", 401)
     }
     const parsed = SchemaCarrinho.deleteCarrinho.safeParse(body)
     if (!parsed.success) {
