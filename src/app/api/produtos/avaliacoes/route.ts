@@ -26,7 +26,8 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      path: "/"
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365
     })
     return NextResponse.json({ data: avaliacao, message: "Avaliação criada com sucesso" }, { status: 201 })
   }

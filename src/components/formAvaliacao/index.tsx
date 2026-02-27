@@ -5,42 +5,70 @@ import { FaStar, FaRegStar } from "react-icons/fa"
 import { StarsBar } from "../starsMedia"
 import { MdAccountCircle } from "react-icons/md"
 import { ProdutoAvaliacoes } from "@/interfaces/produto"
+import { toast } from "sonner"
 
 export function FormAvaliacao(props: { produtoId: number }) {
   const [avaliacoesUser, setAvaliacoesUser] = useState([])
   const [nota, setNota] = useState(1)
-  useEffect(() => {
+  function getAvaliacoes() {
     fetch(`/api/produtos/avaliacoes/${props.produtoId}/?token=true`, {
       credentials: "include",
       cache: "no-store"
     })
       .then(res => res.json())
       .then(data => setAvaliacoesUser(data))
+  }
+  useEffect(() => {
+    getAvaliacoes()
   }, [props.produtoId])
 
   async function handleAvaliar(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const nome = formData.get("name")
     const coment = formData.get("coment")
-    
-    await fetch("/api/produtos/avaliacoes", {
-      credentials: "include",
-      method: "POST",
-      body: JSON.stringify({
-        nome_user: nome,
-        nota_avaliacao: nota,
-        comentario_avaliacao: coment,
-        id_produto: props.produtoId
+
+    async function avaliar() {
+      const response = await fetch("/api/produtos/avaliacoes", {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({
+          nome_user: nome,
+          nota_avaliacao: nota,
+          comentario_avaliacao: coment,
+          id_produto: props.produtoId
+        })
       })
+      if (!response.ok) {
+        throw Error("Não foi possivel avaliar o produto")
+      }
+      getAvaliacoes()
+    }
+    toast.promise(avaliar(), {
+      loading: 'Avaliando produto...',
+      success: 'Produto avaliado com sucesso!',
+      error: 'Não foi possível avaliar o produto.',
     })
   }
 
   async function handleDeleteAvaliacao(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const avaliacaoId = formData.get("avaliacaoId")
-    await fetch(`/api/produtos/avaliacoes/${avaliacaoId}`, {
-      credentials: "include",
-      method: "DELETE"
+    async function deleteAvaliacao() {
+      const response = await fetch(`/api/produtos/avaliacoes/${avaliacaoId}`, {
+        credentials: "include",
+        method: "DELETE"
+      })
+      if (!response.ok) {
+        throw Error("Não foi possivel deletar o produto")
+      }
+      getAvaliacoes()
+    }
+    toast.promise(deleteAvaliacao(), {
+      loading: 'Deletando a avaliação...',
+      success: 'Avaliação deletada com sucesso!',
+      error: 'Não foi possível deletar a avaliação.',
     })
   }
 
@@ -53,9 +81,9 @@ export function FormAvaliacao(props: { produtoId: number }) {
         p-3 rounded-lg focus:outline-none focus:border-yellow-300"/>
         <div className="flex gap-1 text-yellow-300">
           {[1, 2, 3, 4, 5].map((n) => {
-            let comp = <FaRegStar size={28} onClick={() => setNota(n)} className="cursor-pointer"/>
+            let comp = <FaRegStar size={28} onClick={() => setNota(n)} className="cursor-pointer" />
             if (nota >= n) {
-              comp = <FaStar size={28} onClick={() => setNota(n)} className="cursor-pointer"/>
+              comp = <FaStar size={28} onClick={() => setNota(n)} className="cursor-pointer" />
             }
             return (
               <div key={n}>
@@ -93,7 +121,7 @@ export function FormAvaliacao(props: { produtoId: number }) {
               <p className="text-lg"> {avaliacao.comentario_avaliacao} </p>
             </div>
             <form action="" method="post" onSubmit={handleDeleteAvaliacao}>
-              <input type="hidden" name="avaliacaoId" value={avaliacao.id_avaliacao}/>
+              <input type="hidden" name="avaliacaoId" value={avaliacao.id_avaliacao} />
               <button type="submit" className="h-8 bg-[#FF0000] cursor-pointer
               text-white text-lg rounded-xl font-medium py-5 px-8 flex items-center
               justify-center mt-5"> Excluir </button>

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { urlApi } from "@/lib/api"
+import { toast } from "sonner"
 
 export function FormAddCarrinho({
   defaultValue = 1,
@@ -16,19 +17,29 @@ export function FormAddCarrinho({
   function diminuir() {
     setQtd(Math.max(min, qtd - 1))
   }
-  async function handleAddCart() {
-    await fetch(`${urlApi}/api/carrinho`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        quantidade_itens: qtd,
-        id_produto: produtoId
+  async function handleAddCart(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    async function addCarrinho() {
+      const response = await fetch(`${urlApi}/api/carrinho`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          quantidade_itens: qtd,
+          id_produto: produtoId
+        })
       })
+      if (!response.ok) {
+        throw new Error("Erro ao adicionar")
+      }
+    }
+    toast.promise(addCarrinho(), {
+      loading: 'Adicionando item...',
+      success: 'Item adicionado com sucesso!',
+      error: 'Não foi possível adicionar o item ao carrinho.',
     })
-
   }
   return (
     <form onSubmit={handleAddCart} className="mt-auto w-full flex flex-col gap-5">

@@ -36,7 +36,6 @@ export const CarrinhoService = {
     let token = cookieStore.get("token_session")?.value
     if (!token) {
       token = randomUUID()
-      await CarrinhoRepository.createCarrinho(token)
     }
     const parsed = SchemaCarrinho.postCarrinho.safeParse(body)
     if (!parsed.success) {
@@ -45,15 +44,22 @@ export const CarrinhoService = {
 
     const carrinhoId = await CarrinhoRepository.getCarrinhoByToken(token)
     if (!carrinhoId) {
-      throw new AppError("Carrinho não encontrado", 404)
+      const carrinhoId = await CarrinhoRepository.createCarrinho(token)
+      const data = {
+        id_produto: parsed.data.id_produto,
+        quantidade_itens: parsed.data.quantidade_itens,
+        id_carrinho: carrinhoId.id_carrinho
+      }
+      await CarrinhoRepository.createCarrinhoItem(data)
+      const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
+      return carrinho
     }
-
+    
     const data = {
       id_produto: parsed.data.id_produto,
       quantidade_itens: parsed.data.quantidade_itens,
       id_carrinho: carrinhoId.id_carrinho
     }
-
     await CarrinhoRepository.createCarrinhoItem(data)
     const carrinho = await CarrinhoRepository.getCarrinhoByToken(token)
     return carrinho
