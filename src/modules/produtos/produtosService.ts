@@ -3,7 +3,7 @@ import { SchemaProdutos } from "./produtos.schema"
 import { AppError } from "@/shared/errors/AppError"
 import { CategoriasRepository } from "../categorias/categoriasRepository"
 import { AvaliacoesRepository } from "./avaliacoes/avaliacoesRepository"
-import { avaliacoesMediaProdutos } from "@/utils/mediaProdutosUtils"
+import { extraDataProdutos } from "@/utils/extraProdutosUtils"
 
 export const ProdutosService = {
   getProdutos: async function (url: string, id?: string) {
@@ -54,11 +54,12 @@ export const ProdutosService = {
             throw new AppError("Dados inválidos", 400)
           }
           const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit, search)
-          const listProdutos = avaliacoesMediaProdutos(produtos)
+          const listProdutos = extraDataProdutos(produtos)
           return listProdutos
         }
+
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, undefined, undefined, search)
-        const listProdutos = avaliacoesMediaProdutos(produtos)
+        const listProdutos = extraDataProdutos(produtos)
         return listProdutos
       }
 
@@ -68,11 +69,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit)
-        const listProdutos = avaliacoesMediaProdutos(produtos)
+        const listProdutos = extraDataProdutos(produtos)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias)
-      const listProdutos = avaliacoesMediaProdutos(produtos)
+      const listProdutos = extraDataProdutos(produtos)
       return listProdutos
     }
 
@@ -87,11 +88,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByName(search, parsed.data.page, parsed.data.limit)
-        const listProdutos = avaliacoesMediaProdutos(produtos)
+        const listProdutos = extraDataProdutos(produtos)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByName(search)
-      const listProdutos = avaliacoesMediaProdutos(produtos)
+      const listProdutos = extraDataProdutos(produtos)
       return listProdutos
     }
 
@@ -101,12 +102,12 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
       const produtos = await ProdutosRepository.getProdutos(parsed.data.page, parsed.data.limit)
-      const listProdutos = avaliacoesMediaProdutos(produtos)
+      const listProdutos = extraDataProdutos(produtos)
       return listProdutos
     }
 
     const produtos = await ProdutosRepository.getProdutos()
-    const listProdutos = avaliacoesMediaProdutos(produtos)
+    const listProdutos = extraDataProdutos(produtos)
     return listProdutos
   },
 

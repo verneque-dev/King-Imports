@@ -1,3 +1,5 @@
+import { ProdutosRepository } from "@/modules/produtos/produtosRepository"
+
 interface Produtos {
   id_produtos: number
   nome_produtos: string
@@ -23,7 +25,7 @@ interface Produtos {
   }[]
 }
 
-export function avaliacoesMediaProdutos(listProdutos: Produtos[]) {
+export function extraDataProdutos(listProdutos: Produtos[]) {
   const produtos = listProdutos.map((produto) => {
     const soma = produto.produtos_avaliacoes.reduce((acc, curr) => {
       return acc + curr.nota_avaliacao
@@ -37,5 +39,8 @@ export function avaliacoesMediaProdutos(listProdutos: Produtos[]) {
       quantidade: quantidade
     }
   }).sort((a, b) => b.media - a.media)
+
+  // const totalItens = await ProdutosRepository.totalProdutos()
+  // const pages = Math.ceil(totalItens / 20)
   return produtos
 }

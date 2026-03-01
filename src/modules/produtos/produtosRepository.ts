@@ -149,5 +149,10 @@ export const ProdutosRepository = {
       }
     })
     return produto
+  },
+
+  totalProdutos: async function () {
+    const total = await prisma.produtos.count()
+    return total
   }
 }
