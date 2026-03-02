@@ -31,7 +31,6 @@ export default async function Produtos({ searchParams }: Props) {
   if (page) {
     params.append("page", page)
     params.append("limit", limit)
-    console.log(limit)
   }
   const query = params.toString()
 
@@ -101,8 +100,8 @@ export default async function Produtos({ searchParams }: Props) {
             {categoria && <input type="hidden" name="categoria" value={categoria} />}
             <input type="hidden" name="page" value={Number(page) - 1} />
             <input type="hidden" name="limit" value={limit} />
-            <button type="submit" className={`w-24 h-12 bg-black text-white rounded-lg
-        text-base cursor-pointer ${Number(page) === 1 ? "hidden" : "block"}`}> Anterior </button>
+            <button type="submit" className={`w-24 h-12 text-white rounded-lg
+        text-base ${Number(page) <= 1 ? "bg-black/50 cursor-not-allowed" : "bg-black cursor-pointer"}`} disabled={Number(page) <= 1}> Anterior </button>
           </form>
 
           <span className="text-xl"> {page} </span>
@@ -112,8 +111,8 @@ export default async function Produtos({ searchParams }: Props) {
             {categoria && <input type="hidden" name="categoria" value={categoria} />}
             <input type="hidden" name="page" value={Number(page) + 1} />
             <input type="hidden" name="limit" value={limit} />
-            <button type="submit" className={`w-24 h-13 bg-black text-white rounded-lg
-        text-base cursor-pointer ${Number(page) === produtos.pages ? "hidden" : "block"}`}> Proxima </button>
+            <button type="submit" className={`w-24 h-12 text-white rounded-lg
+        text-base ${Number(page) >= produtos.pages ? "bg-black/50 cursor-not-allowed" : "bg-black cursor-pointer"}`} disabled={Number(page) >= produtos.pages}> Proxima </button>
           </form>
         </div>
       </div>

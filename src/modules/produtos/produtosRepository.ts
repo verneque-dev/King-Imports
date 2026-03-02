@@ -154,5 +154,28 @@ export const ProdutosRepository = {
   totalProdutos: async function () {
     const total = await prisma.produtos.count()
     return total
+  },
+
+  totalProdutosCategoria: async function (categoria: number, search: string = "") {
+    const total = await prisma.produtos.count({
+      where: {
+        nome_produtos: {
+          contains: search
+        },
+        id_categoria: categoria
+      }
+    })
+    return total
+  },
+
+  totalProdutosSearch: async function (search: string) {
+    const total = await prisma.produtos.count({
+      where: {
+        nome_produtos: {
+          contains: search
+        }
+      }
+    })
+    return total
   }
 }

@@ -54,12 +54,12 @@ export const ProdutosService = {
             throw new AppError("Dados inválidos", 400)
           }
           const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit, search)
-          const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
+          const listProdutos = await extraDataProdutos(produtos, parsed.data.limit, "categoria", categoriaData.id_categorias, search)
           return listProdutos
         }
 
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, undefined, undefined, search)
-        const listProdutos = await extraDataProdutos(produtos)
+        const listProdutos = await extraDataProdutos(produtos, undefined, "categoria", categoriaData.id_categorias, search)
         return listProdutos
       }
 
@@ -69,11 +69,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit)
-        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
+        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit, "categoria", categoriaData.id_categorias)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias)
-      const listProdutos = await extraDataProdutos(produtos)
+      const listProdutos = await extraDataProdutos(produtos, undefined, "categoria")
       return listProdutos
     }
 
@@ -88,11 +88,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByName(search, parsed.data.page, parsed.data.limit)
-        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
+        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit, "search", undefined, search)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByName(search)
-      const listProdutos = await extraDataProdutos(produtos)
+      const listProdutos = await extraDataProdutos(produtos, undefined, "search", undefined, search)
       return listProdutos
     }
 

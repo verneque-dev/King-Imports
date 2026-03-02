@@ -25,7 +25,7 @@ interface Produtos {
   }[]
 }
 
-export async function extraDataProdutos(listProdutos: Produtos[], limit: number = 20) {
+export async function extraDataProdutos(listProdutos: Produtos[], limit: number = 20, query?: string, categoriaId: number = 1, search: string = "") {
   const produtos = listProdutos.map((produto) => {
     const soma = produto.produtos_avaliacoes.reduce((acc, curr) => {
       return acc + curr.nota_avaliacao
@@ -40,7 +40,13 @@ export async function extraDataProdutos(listProdutos: Produtos[], limit: number 
     }
   }).sort((a, b) => b.media - a.media)
 
-  const totalItens = await ProdutosRepository.totalProdutos()
+  let totalItens = await ProdutosRepository.totalProdutos()
+  if (query === "categoria") {
+    totalItens = await ProdutosRepository.totalProdutosCategoria(categoriaId, search)
+  }
+  else if (query === "search") {
+    totalItens = await ProdutosRepository.totalProdutosSearch(search)
+  }
   const pages = Math.ceil(totalItens / limit)
 
   return { data: produtos, totalItens, pages } 
