@@ -31,13 +31,14 @@ export default async function Produtos({ searchParams }: Props) {
   if (page) {
     params.append("page", page)
     params.append("limit", limit)
+    console.log(limit)
   }
   const query = params.toString()
 
   const res = await fetch(`${urlApi}/api/produtos/?${query}`, {
     cache: "no-store"
   })
-  const produtos: Produto[] = await res.json()
+  const produtos: Produto = await res.json()
 
   const resCategorias = await fetch(`${urlApi}/api/categorias`, {
     cache: "no-store"
@@ -49,8 +50,8 @@ export default async function Produtos({ searchParams }: Props) {
       <div className="w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {/* cards */}
-          {Array.isArray(produtos) && produtos.length > 0 ? (
-            produtos.map((produto) => {
+          {Array.isArray(produtos.data) && produtos.data.length > 0 ? (
+            produtos.data.map((produto) => {
               return (
                 <Link href={`/produtos/${produto.id_produtos}`} key={produto.id_produtos}>
                   <div className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform">
@@ -94,13 +95,14 @@ export default async function Produtos({ searchParams }: Props) {
       </div>
 
       <div className="flex w-full justify-center mt-auto p-5">
-        <div className="flex justify-center items-center w-66 gap-6 border border-black rounded-lg p-1 top-20">
+        <div className="flex justify-center items-center gap-6 border border-black rounded-lg p-1 top-20">
           <form action="/produtos" method="get">
             {search && <input type="hidden" name="search" value={search} />}
             {categoria && <input type="hidden" name="categoria" value={categoria} />}
             <input type="hidden" name="page" value={Number(page) - 1} />
-            <button type="submit" className="w-24 h-12 bg-black text-white rounded-lg
-        text-base cursor-pointer"> Anterior </button>
+            <input type="hidden" name="limit" value={limit} />
+            <button type="submit" className={`w-24 h-12 bg-black text-white rounded-lg
+        text-base cursor-pointer ${Number(page) === 1 ? "hidden" : "block"}`}> Anterior </button>
           </form>
 
           <span className="text-xl"> {page} </span>
@@ -109,8 +111,9 @@ export default async function Produtos({ searchParams }: Props) {
             {search && <input type="hidden" name="search" value={search} />}
             {categoria && <input type="hidden" name="categoria" value={categoria} />}
             <input type="hidden" name="page" value={Number(page) + 1} />
-            <button type="submit" className="w-24 h-13 bg-black text-white rounded-lg
-        text-base cursor-pointer"> Proxima </button>
+            <input type="hidden" name="limit" value={limit} />
+            <button type="submit" className={`w-24 h-13 bg-black text-white rounded-lg
+        text-base cursor-pointer ${Number(page) === produtos.pages ? "hidden" : "block"}`}> Proxima </button>
           </form>
         </div>
       </div>

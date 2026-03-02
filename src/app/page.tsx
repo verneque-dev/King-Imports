@@ -9,7 +9,7 @@ export default async function Home() {
   const res = await fetch(`${urlApi}/api/produtos/`, {
     cache: "no-store"
   })
-  const produtos: Produto[] = await res.json()
+  const produtos: Produto = await res.json()
   return (
     <div className="max-w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
       <Carrosel/>
@@ -19,7 +19,7 @@ export default async function Home() {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {/* cards */}
-        {produtos.slice(0, 9).map((produto) => {
+        {produtos.data.slice(0, 9).map((produto) => {
           return (
             <Link href={`/produtos/${produto.id_produtos}`} key={produto.id_produtos}>
               <div className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform">

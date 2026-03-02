@@ -37,7 +37,7 @@ export function Header() {
       </form>
       <nav className="items-end-safe w-[35%] justify-between ml-auto md:flex hidden">
         <Link href="/" className="text-white text-[100%] mb-2"> inicio </Link>
-        <Link href="/produtos" className="text-white text-[100%] mb-2"> produtos </Link>
+        <Link href="/produtos?page=1&limit=20" className="text-white text-[100%] mb-2"> produtos </Link>
         <Link href="/" className="text-white text-[100%] mb-2"> sobre </Link>
         <Link href="/carrinho" className="h-8 w-8 mb-2">
           <Image
@@ -69,7 +69,7 @@ export function Header() {
         </div>
         <div className="pl-8 flex flex-col gap-10 text-black text-xl">
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1"> <IoHome /> inicio </Link>
-          <Link href="/produtos" onClick={() => setOpen(false)} className="flex items-center gap-1"> <PiShoppingBagOpenFill /> produtos </Link>
+          <Link href="/produtos?page=1&limit=20" onClick={() => setOpen(false)} className="flex items-center gap-1"> <PiShoppingBagOpenFill /> produtos </Link>
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-1"> <FaPeopleGroup />  sobre </Link>
           <Link href="/carrinho" onClick={() => setOpen(false)} className="flex items-center gap-1"> <AiFillShopping /> carrinho </Link>
         </div>

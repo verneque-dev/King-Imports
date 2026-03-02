@@ -54,12 +54,12 @@ export const ProdutosService = {
             throw new AppError("Dados inválidos", 400)
           }
           const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit, search)
-          const listProdutos = extraDataProdutos(produtos)
+          const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
           return listProdutos
         }
 
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, undefined, undefined, search)
-        const listProdutos = extraDataProdutos(produtos)
+        const listProdutos = await extraDataProdutos(produtos)
         return listProdutos
       }
 
@@ -69,11 +69,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias, parsed.data.page, parsed.data.limit)
-        const listProdutos = extraDataProdutos(produtos)
+        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByCategoria(categoriaData.id_categorias)
-      const listProdutos = extraDataProdutos(produtos)
+      const listProdutos = await extraDataProdutos(produtos)
       return listProdutos
     }
 
@@ -88,11 +88,11 @@ export const ProdutosService = {
           throw new AppError("Dados inválidos", 400)
         }
         const produtos = await ProdutosRepository.getProdutosByName(search, parsed.data.page, parsed.data.limit)
-        const listProdutos = extraDataProdutos(produtos)
+        const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
         return listProdutos
       }
       const produtos = await ProdutosRepository.getProdutosByName(search)
-      const listProdutos = extraDataProdutos(produtos)
+      const listProdutos = await extraDataProdutos(produtos)
       return listProdutos
     }
 
@@ -102,12 +102,12 @@ export const ProdutosService = {
         throw new AppError("Dados inválidos", 400)
       }
       const produtos = await ProdutosRepository.getProdutos(parsed.data.page, parsed.data.limit)
-      const listProdutos = extraDataProdutos(produtos)
+      const listProdutos = await extraDataProdutos(produtos, parsed.data.limit)
       return listProdutos
     }
 
     const produtos = await ProdutosRepository.getProdutos()
-    const listProdutos = extraDataProdutos(produtos)
+    const listProdutos = await extraDataProdutos(produtos)
     return listProdutos
   },
 

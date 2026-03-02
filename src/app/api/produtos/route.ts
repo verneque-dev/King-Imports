@@ -6,6 +6,7 @@ import { authAdmin } from "@/middlewares/authAdminMiddleware";
 export async function GET(req: NextRequest) {
   try {
     const data = await ProdutosService.getProdutos(req.url)
+
     return NextResponse.json(data, { status: 200 })
   }
   catch (err) {
@@ -51,6 +52,6 @@ export async function PUT(req: NextRequest) {
     if (err instanceof AppError) {
       return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500})
+    return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }

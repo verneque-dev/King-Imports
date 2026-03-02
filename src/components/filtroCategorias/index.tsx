@@ -16,7 +16,7 @@ export function FiltroCategoria(props: { categoria: string, categorias: Categori
     } else {
       params.delete("categoria")
     }
-    params.delete("page")
+    params.set("page", "1")
     router.push(`/produtos?${params.toString()}`)
   }
 
