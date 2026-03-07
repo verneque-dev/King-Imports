@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer";
 import "./globals.css"
 import { Header } from "@/components/header"
 import { Toaster } from 'sonner'
@@ -15,6 +16,7 @@ export default function RootLayout({
         <Toaster richColors position="bottom-right"/>
         <Header/>
         {children}
+        <Footer/>
       </body>
     </html>
   );

@@ -8,8 +8,15 @@ import { IoHome } from "react-icons/io5"
 import { PiShoppingBagOpenFill } from "react-icons/pi"
 import { FaPeopleGroup } from "react-icons/fa6";
 import { AiFillShopping } from "react-icons/ai";
+import { useSearchParams } from "next/navigation"
 
 export function Header() {
+  const searchParams = useSearchParams()
+  const categoria = searchParams.get("categoria")
+  const search = searchParams.get("search")
+  const limit = searchParams.get("limit")
+  const page = searchParams.get("page")
+
   const [open, setOpen] = useState(false)
   return (
     <div className="w-full bg-black h-20 flex items-end-safe gap-[3%] justify-end-safe px-[4%]">
@@ -24,7 +31,11 @@ export function Header() {
       </Link>
       <form action="/produtos" method="GET" className="bg-white mb-2 h-8 md:w-[40%] w-[60%] flex relative
       border border-white focus-within:border-amber-300 mx-auto rounded-full">
-        <input className="h-full w-full pl-3 focus:outline-none focus:ring-0" type="text" placeholder="buscar..." name="search" />
+        <input className="h-full w-full pl-3 focus:outline-none focus:ring-0" type="text" placeholder="buscar..." name="search"
+        defaultValue={search ? search.toString() : ""}/>
+        {categoria && (<input type="hidden" name="categoria" value={categoria}/>)}
+        {page && (<input type="hidden" name="page" value={page}/>)}
+        {limit && (<input type="hidden" name="limit" value={limit}/>)}
         <div className="h-full w-8 bg-white mr-2 p-1.5">
           <Image
             src="/search.png"
