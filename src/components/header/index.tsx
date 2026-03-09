@@ -2,21 +2,42 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FiMenu } from "react-icons/fi"
 import { IoHome } from "react-icons/io5"
 import { PiShoppingBagOpenFill } from "react-icons/pi"
 import { FaPeopleGroup } from "react-icons/fa6";
 import { AiFillShopping } from "react-icons/ai";
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 export function Header() {
   const searchParams = useSearchParams()
-  const categoria = searchParams.get("categoria")
-  const search = searchParams.get("search")
-  const limit = searchParams.get("limit")
-  const page = searchParams.get("page")
+  const router = useRouter()
+  const pathname = usePathname()
+  const search = pathname !== "/produtos" ? "" : searchParams.get("search") || ""
+  const [searchBar, setSearchBar] = useState(search)
+  
+  useEffect(() => {
+    setSearchBar(search)
+  }, [search])
 
+
+  function handleSearch(event: React.FormEvent) {
+    event.preventDefault()
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (searchBar) {
+      params.set("search", searchBar.trim())
+    }
+    else {
+      params.delete("search")
+    }
+
+    const limit = params.get("limit") || "20"
+    params.set("page", "1")
+    params.set("limit", limit)
+    router.push(`/produtos?${params.toString()}`)
+  }
   const [open, setOpen] = useState(false)
   return (
     <div className="w-full bg-black h-20 flex items-end-safe gap-[3%] justify-end-safe px-[4%]">
@@ -29,13 +50,13 @@ export function Header() {
           className="w-full h-full"
         />
       </Link>
-      <form action="/produtos" method="GET" className="bg-white mb-2 h-8 md:w-[40%] w-[60%] flex relative
+      <form action="" onSubmit={handleSearch} method="GET" className="bg-white mb-2 h-8 md:w-[40%] w-[60%] flex relative
       border border-white focus-within:border-amber-300 mx-auto rounded-full">
         <input className="h-full w-full pl-3 focus:outline-none focus:ring-0" type="text" placeholder="buscar..." name="search"
-        defaultValue={search ? search.toString() : ""}/>
-        {categoria && (<input type="hidden" name="categoria" value={categoria}/>)}
-        {page && (<input type="hidden" name="page" value={page}/>)}
-        {limit && (<input type="hidden" name="limit" value={limit}/>)}
+          value={searchBar}
+          onChange={(e) => {setSearchBar(e.target.value)}}
+        />
+        
         <div className="h-full w-8 bg-white mr-2 p-1.5">
           <Image
             src="/search.png"

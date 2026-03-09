@@ -11,7 +11,7 @@ export default async function Home() {
   })
   const produtos: Produto = await res.json()
   return (
-    <div className="max-w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
+    <div className="w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white">
       <Carrosel/>
       <div className="w-full bg-yellow-300 rounded-lg flex mb-8 items-center
       justify-center mx-auto p-3">

@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="antialiased bg-[#eeeeee]"
+        className="antialiased flex flex-col bg-[#f5f5f5] min-h-screen"
       >
         <Toaster richColors position="bottom-right"/>
         <Header/>

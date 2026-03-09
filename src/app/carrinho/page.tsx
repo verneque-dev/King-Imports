@@ -75,7 +75,7 @@ export default function CarrinhoPage() {
 
 
   return (
-    <div className="max-w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white flex flex-col gap-10">
+    <div className="w-[95%] mx-auto px-4 py-8 my-5 shadow-[0_6px_24px_rgba(0,0,0,0.08)] bg-white flex flex-col gap-10">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {carrinho?.carrinho_itens?.map((item) => {
           return (
@@ -111,12 +111,12 @@ export default function CarrinhoPage() {
       {carrinho?.carrinho_itens && carrinho.carrinho_itens.length > 0 ? (
         <form action="" method="post" onSubmit={handleFinalizarPedido} className="flex w-full justify-center">
           <button type="submit" className="bg-yellow-300
-      text-white font w-full md:w-1/2 h-10 rounded-lg text-lg cursor-pointer"> Finalizar pedido </button>
+      text-white font w-full md:w-1/2 h-10 rounded-lg text-lg cursor-pointer"> Finalizar pedido no WhatsApp </button>
         </form>
       ) : (
-        <div className="mb-10 flex justify-center gap-2">
+        <div className="mb-10 flex justify-center items-center gap-2 h-28">
           <IoCart size={32} className="text-gray-500"/>
-          <p className="text-center text-gray-500 text-xl mt-1"> O seu carrinho está vazio </p>
+          <p className="text-center text-gray-500 text-xl mt-1"> O seu carrinho está vázio. </p>
         </div>
       )} 
     </div>
