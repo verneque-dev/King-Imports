@@ -6,12 +6,13 @@ import { StarsBar } from "../starsMedia"
 import { MdAccountCircle } from "react-icons/md"
 import { ProdutoAvaliacoes } from "@/interfaces/produto"
 import { toast } from "sonner"
+import { urlApi } from "@/lib/api"
 
 export function FormAvaliacao(props: { produtoId: number }) {
   const [avaliacoesUser, setAvaliacoesUser] = useState([])
   const [nota, setNota] = useState(1)
   function getAvaliacoes() {
-    fetch(`/api/produtos/avaliacoes/${props.produtoId}/?token=true`, {
+    fetch(`${urlApi}/api/produtos/avaliacoes/${props.produtoId}/?token=true`, {
       credentials: "include",
       cache: "no-store"
     })

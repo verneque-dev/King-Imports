@@ -23,4 +23,5 @@ export interface Carrinho {
   id_carrinho: number
   token: string
   created_at: Date
+  valorTotal: number
 }

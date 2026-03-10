@@ -93,15 +93,15 @@ export default function CarrinhoPage() {
                 <p className="text-base font-medium line-clamp-2 min-h-11 max-h-11"> {item.produtos.nome_produtos} </p>
                 <p className="text-gray-600 text-sm mb-4 line-clamp-1"> {item.produtos.desc_produtos} </p>
 
-                <div className="mt-auto flex items-end">
-                  <span className="text-sm font-bold text-green-700"> total - R$ {item.produtos.preco_produtos * item.quantidade_itens} </span>
-                  <span className="text-md font-medium text-black ml-auto"> {item.quantidade_itens}x </span>
+                <div className="mt-auto flex items-end gap-2">
+                <span className="text-sm font-medium text-black"> {item.quantidade_itens}x - </span>
+                  <span className="text-sm font-bold text-green-700">R$ {item.produtos.preco_produtos * item.quantidade_itens} </span>
                 </div>
                 <form action="" onSubmit={handleDeletarItem} method="post">
                   <input type="hidden" name="itemId" value={item.id_itens} />
-                  <button type="submit" className="h-7 w-full bg-[#FF0000] cursor-pointer
+                  <button type="submit" className="h-4 w-full bg-[#FF0000] cursor-pointer
               text-white text-lg rounded-xl font-medium py-5 px-8 flex items-center
-              justify-center mt-5"> Excluir </button>
+              justify-center mt-5"> Remover </button>
                 </form>
               </div>
             </div>
@@ -109,9 +109,11 @@ export default function CarrinhoPage() {
         })}
       </div>
       {carrinho?.carrinho_itens && carrinho.carrinho_itens.length > 0 ? (
-        <form action="" method="post" onSubmit={handleFinalizarPedido} className="flex w-full justify-center">
+        <form action="" method="post" onSubmit={handleFinalizarPedido} className="flex flex-col w-full items-center">
+          <div className="border-t border-x rounded-t-lg border-yellow-300 flex h-10
+          justify-center items-center w-full md:w-1/3"> Valor total - R$ {carrinho.valorTotal} </div>
           <button type="submit" className="bg-yellow-300
-      text-white font w-full md:w-1/2 h-10 rounded-lg text-lg cursor-pointer"> Finalizar pedido no WhatsApp </button>
+      text-white font w-full md:w-1/3 h-10 rounded-b-lg text-lg cursor-pointer"> Finalizar pedido no WhatsApp </button>
         </form>
       ) : (
         <div className="mb-10 flex justify-center items-center gap-2 h-28">

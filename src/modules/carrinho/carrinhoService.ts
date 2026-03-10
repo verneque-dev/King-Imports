@@ -21,7 +21,14 @@ export const CarrinhoService = {
       if (!carrinho) {
         throw new AppError("Carrinho não encontrado", 404)
       }
-      return carrinho
+      
+      const valorTotal = carrinho.carrinho_itens.reduce((acc, curr) => {
+        return acc + Number(curr.produtos.preco_produtos) * curr.quantidade_itens
+      }, 0)
+      return {
+        ...carrinho,
+        valorTotal
+      }
     }
     const auth = await authAdmin()
     if (!auth) {
