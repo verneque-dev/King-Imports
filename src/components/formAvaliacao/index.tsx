@@ -75,7 +75,7 @@ export function FormAvaliacao(props: { produtoId: number }) {
 
   return (
     <div>
-      <form method="post" onSubmit={handleAvaliar} className="flex flex-col items-center gap-5 shadow-lg py-8 px-5 mb-15">
+      <form method="post" onSubmit={handleAvaliar} className="flex flex-col items-center gap-5 shadow-lg py-8 px-5 mb-15 rounded-lg">
         <input type="text" name="name" required placeholder="Nome(obrigatório)" className="border h-10 w-full md:w-1/2 
         p-3 rounded-lg focus:outline-none focus:border-yellow-300"/>
         <input type="text" name="coment" placeholder="Comentário(opcional)" className="border h-9 w-full md:w-1/2 
