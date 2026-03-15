@@ -111,6 +111,8 @@ export const CarrinhoService = {
       mensagem += `
 ${produto.nome_produtos} - ${price} R$`
       total += price
+
+      await CarrinhoRepository.deleteCarrinhoItem(carrinho.id_carrinho, carrinho.id_carrinho)
     }
     mensagem += `
 

@@ -5,7 +5,6 @@ import { authAdmin } from "@/middlewares/authAdminMiddleware";
 
 export async function GET(req: NextRequest) {
   try {
-    await new Promise(resolve => setTimeout(resolve, 5000))
     const data = await ProdutosService.getProdutos(req.url)
 
     return NextResponse.json(data, { status: 200 })

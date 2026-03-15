@@ -33,11 +33,18 @@ export function Header() {
       params.delete("search")
     }
 
+    // pesquisa na pagina dashboard
+    if (pathname === "/dashboard") {
+      router.push(`/dashboard?${params.toString()}`)
+    }
+
+    // pesquisa na pagina produtos
     const limit = params.get("limit") || "20"
     params.set("page", "1")
     params.set("limit", limit)
     router.push(`/produtos?${params.toString()}`)
   }
+
   const [open, setOpen] = useState(false)
   return (
     <div className="w-full bg-black h-20 flex items-end-safe gap-[3%] justify-end-safe px-[4%]">
