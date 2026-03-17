@@ -44,7 +44,7 @@ export default async function DashBoard({ searchParams }: { searchParams: Promis
         </div>
       </div>
 
-      <ListProdutos produtos={produtos}/>
+      <ListProdutos produtos={produtos} categorias={categorias}/>
     </div>
   )
 }
