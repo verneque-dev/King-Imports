@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'acdn-us.mitiendanube.com',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com', // 👈 Adiciona esta entrada
+        pathname: '/**',
+      },
     ],
   },
 };

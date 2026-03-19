@@ -65,7 +65,7 @@ export default async function Produtos({ searchParams }: Props) {
 
                     <div className="flex flex-col flex-1 p-2 bg-white">
                       <p className="text-base font-medium line-clamp-2 min-h-11 max-h-11"> {produto.nome_produtos} </p>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-1"> {produto.desc_produtos} </p>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-1 min-h-[1.25rem]"> {produto.desc_produtos} </p>
 
                       <div className="mt-auto flex items-end">
                         <span className="text-sm font-bold text-green-700"> R$ {produto.preco_produtos} </span>
