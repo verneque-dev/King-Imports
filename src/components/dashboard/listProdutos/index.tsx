@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from "react"
 import { MdDeleteForever, MdEdit } from "react-icons/md"
 import { toast } from "sonner"
+import Link from "next/link"
+import Image from "next/image"
 
 export function ListProdutos(props: { produtos: Produto, categorias: Categoria[] }) {
   const router = useRouter()
@@ -14,13 +16,15 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
   const [overlayCreate, setOverlayCreate] = useState(false)
   const [modalImage, setModalImage] = useState(0)
   const [produto, setProduto] = useState<ProdutoUnico | null>(null)
+  const [triggerProduto, setTriggerProduto] = useState(0)
+
   useEffect(() => {
     if (produtoMenu > 0) {
       fetch(`${urlApi}/api/produtos/${produtoMenu}`)
         .then(res => res.json())
         .then(produto => setProduto(produto))
     }
-  }, [produtoMenu])
+  }, [produtoMenu, triggerProduto])
 
   function handleDelete(id: number) {
     async function deleteProduto() {
@@ -116,14 +120,15 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
 
   function handleUpload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const formEvent = event.currentTarget
     const formData = new FormData(event.currentTarget)
-    const principal = formData.get("tipo") === "true" ? true : false  
+    const principal = formData.get("tipo") === "true" ? true : false
     async function uploadProduto() {
       const resUpload = await fetch(`${urlApi}/api/upload`, {
         method: "POST",
         body: formData
       })
-      
+
       if (!resUpload.ok) {
         throw new Error("Falha ao fazer upload no cloudinary.")
       }
@@ -136,6 +141,7 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
         },
         body: JSON.stringify({
           url_image: image.url,
+          public_id: image.public_id,
           principal: principal,
           produto_id: modalImage
         })
@@ -144,20 +150,56 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
       if (!resImage.ok) {
         throw new Error("Falha ao salvar imagem.")
       }
+      setTriggerProduto(prev => prev + 1)
+      formEvent.reset()
     }
     toast.promise(uploadProduto(), {
       success: "Imagem salva com sucesso.",
       error: "Falha ao salvar imagem.",
       loading: "Salvando imagem..."
     })
+  }
 
+  function handleDeleteImage(public_id: string, id: number) {
+    async function deleteImage() {
+      const resDeleteCloud = await fetch(`${urlApi}/api/upload`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          public_id
+        })
+      })
+
+      if (!resDeleteCloud.ok) {
+        throw new Error("Falha ao deletar imagem do cloudinary")
+      }
+
+      const resDeleteImage = await fetch(`${urlApi}/api/produtos/imagens/${id}`, {
+        method: "DELETE"
+      })
+      
+      if (!resDeleteImage.ok) {
+        throw new Error("Falha ao deletar imagem")
+      }
+      setTriggerProduto(prev => prev + 1)
+    }
+    toast.promise(deleteImage(), {
+      success: "Imagem deletada com sucesso.",
+      error: "Falha ao deletar imagem.",
+      loading: "Deletando imagem..."
+    })
   }
 
   return (
     <div className="flex flex-col w-full px-5 pb-10">
-      <div className="flex">
-        <button type="button" className="px-10 py-4 bg-yellow-300 text-white
-      font-bold cursor-pointer rounded-lg mb-10" onClick={() => setOverlayCreate(true)}> criar produto </button>
+      <div className="flex gap-5 mx-auto justify-center">
+        <button type="button" className="w-36 bg-yellow-300 text-white
+      font-bold cursor-pointer rounded-lg mb-10 text-lg" onClick={() => setOverlayCreate(true)}> criar produto </button>
+
+        <Link href="/dashboard/categorias" className="w-36 py-3 bg-yellow-300 text-white
+      font-bold cursor-pointer rounded-lg mb-10 text-lg flex justify-center"> categorias </Link>
       </div>
 
       {props.produtos.data.map((produto, i) => {
@@ -187,7 +229,7 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
             setProduto(null)
           }} className="fixed inset-0 bg-black/50 z-40 overflow-hidden"></div>
 
-          <div className="flex flex-col fixed bg-black h-100 shadow-2xl rounded-2xl
+          <div className="flex flex-col fixed bg-black h-max-100 shadow-2xl rounded-2xl
           p-10 items-center md:w-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50  border border-yellow-300 justify-center">
 
             <form method="post" className="flex flex-col gap-5" onSubmit={handleUpdate}>
@@ -209,7 +251,11 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
                   )
                 })}
               </select>
-              <button type="submit" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg"> atualizar produto </button>
+              <button type="button" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg cursor-pointer"
+                onClick={() => setModalImage(produtoMenu)}>
+                editar imagens
+              </button>
+              <button type="submit" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg cursor-pointer"> atualizar produto </button>
             </form>
           </div>
         </div>
@@ -221,18 +267,18 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
             setOverlayCreate(false)
           }} className="fixed inset-0 bg-black/50 z-40 overflow-hidden"></div>
 
-          <div className="flex flex-col fixed bg-black h-100 shadow-2xl rounded-2xl
+          <div className="flex flex-col fixed bg-black h-max-100 shadow-2xl rounded-2xl
           p-10 items-center md:w-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50  border border-yellow-300 justify-center">
 
             <form method="post" className="flex flex-col gap-5 items-center" onSubmit={handleCreateProduto}>
               <input type="text" name="name" placeholder="nome" required
-                className="bg-white h-10 p-4 rounded-lg w-64" defaultValue={produto?.nome_produtos ?? ""} />
+                className="bg-white h-10 p-4 rounded-lg w-64" />
 
               <input type="text" name="desc" placeholder="descrição"
-                className="bg-white h-10 p-4 rounded-lg w-64" defaultValue={produto?.desc_produtos ?? ""} />
+                className="bg-white h-10 p-4 rounded-lg w-64" />
 
               <input type="text" name="price" placeholder="preço" required
-                className="bg-white h-10 p-4 rounded-lg w-64" defaultValue={produto?.preco_produtos ?? ""} />
+                className="bg-white h-10 p-4 rounded-lg w-64" />
 
               <select name="produtoCategoria" id="" className="bg-white h-10 w-64 px-4" value={produto?.id_categoria}>
                 {props.categorias.map((categoria) => {
@@ -243,8 +289,7 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
                   )
                 })}
               </select>
-              {/* <input type="file" accept="image/*" className="bg-white text-sm p-3"/> */}
-              <button type="submit" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg"> criar produto </button>
+              <button type="submit" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg cursor-pointer"> criar produto </button>
             </form>
           </div>
         </div>
@@ -255,16 +300,34 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
           <div onClick={() => {
             setModalImage(0)
           }} className="fixed inset-0 bg-black/50 z-40 overflow-hidden"></div>
-          
-          <div className="flex flex-col fixed bg-black h-100 shadow-2xl rounded-2xl
-          p-10 items-center md:w-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50  border border-yellow-300">
+
+          <div className="flex flex-col fixed bg-black min-h-110 shadow-2xl rounded-2xl
+          p-10 items-center justify-center md:w-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50  border border-yellow-300">
             <form action="" method="post" onSubmit={handleUpload} className="flex flex-col gap-5 items-center">
-              <input type="file" accept="image/*" name="file" className="bg-white p-3"/>
+              <input type="file" accept="image/*" name="file" className="bg-white p-3" required/>
               <select name="tipo" id="" className="bg-white h-10 px-3 w-full">
                 <option value="false"> normal </option>
                 <option value="true"> principal </option>
               </select>
-              <button type="submit" className="h-10 w-64 bg-yellow-300 text-white font-bold rounded-lg"> fazer upload da imagem </button>
+              <button type="submit" className="h-10 w-full bg-yellow-300 text-white font-bold rounded-lg cursor-pointer"> fazer upload da imagem </button>
+              {produto?.produtos_images.map((image) => {
+                return (
+                  <div key={image.id_images} className="w-full flex gap-5 items-center border border-white rounded-lg pr-3">
+                    <div className="h-14 w-14 relative">
+                      <Image
+                        src={image.images_url}
+                        alt={produto.nome_produtos}
+                        fill
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                    <p className="text-white"> {image.principal ? "principal" : ""} </p>
+                    <button type="button" onClick={() => handleDeleteImage(image.public_id, image.id_images)} className="cursor-pointer ml-auto">
+                      <MdDeleteForever size={32} color="black" className="bg-white p-1 rounded-lg" />
+                    </button>
+                  </div>
+                )
+              })}
             </form>
           </div>
         </div>

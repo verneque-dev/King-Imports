@@ -20,7 +20,7 @@ model produtos {
   desc_produtos       String?
   preco_produtos      Decimal?              @db.Decimal(10, 2)
   id_categoria        Int
-  categorias          categorias?           @relation(fields: [id_categoria], references: [id_categorias], onDelete: NoAction, onUpdate: NoAction)
+  categorias          categorias?           @relation(fields: [id_categoria], references: [id_categorias], onDelete: Cascade, onUpdate: NoAction)
   produtos_images     produtos_images[]
   produtos_avaliacoes produtos_avaliacoes[]
   carrinho_itens      carrinho_itens[]
@@ -28,10 +28,11 @@ model produtos {
 
 model produtos_images {
   id_images  Int       @id @default(autoincrement())
+  public_id  String
   images_url String
   principal  Boolean   @default(false)
   id_produto Int
-  produtos   produtos? @relation(fields: [id_produto], references: [id_produtos], onDelete: NoAction, onUpdate: NoAction)
+  produtos   produtos? @relation(fields: [id_produto], references: [id_produtos], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model produtos_avaliacoes {

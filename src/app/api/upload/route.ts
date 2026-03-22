@@ -25,10 +25,25 @@ export async function POST(req: NextRequest) {
         .end(buffer)
     })
     return NextResponse.json({
-      url: upload.secure_url
+      url: upload.secure_url,
+      public_id: upload.public_id
     }, { status: 200 })
   }
   catch {
     return NextResponse.json({ message: "Falha no upload" }, { status: 500 })
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { public_id } = await req.json()
+    const result = await cloudinary.uploader.destroy(public_id)
+    if (result.result !== "ok") {
+      return NextResponse.json({ message: "Imagem não encontrada no Cloudinary" }, { status: 404 });
+    }
+    return NextResponse.json({ message: "Imagem deletada com sucesso" }, { status: 200 })
+  }
+  catch {
+    return NextResponse.json({ message: "Falha ao deletar imagem" }, { status: 500 })
   }
 }

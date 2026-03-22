@@ -25,6 +25,7 @@ export const ImagensService = {
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
     }
+
     const verifyId = await ProdutosRepository.getProdutosById(parsed.data.produto_id)
     if (!verifyId) {
        throw new AppError("Produto não encontrado", 404)

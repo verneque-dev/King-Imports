@@ -22,6 +22,7 @@ export interface Produto {
       id_produto: number
       id_images: number
       images_url: string
+      public_id: string
     }[]
 
     media: number
@@ -42,6 +43,7 @@ export interface ProdutoUnico {
     principal: boolean
     id_images: number
     images_url: string
+    public_id: string
     id_produto: number
   }[]
 

@@ -2,6 +2,7 @@ import { prisma } from "@/prismaClient";
 
 interface Images {
   url_image: string
+  public_id: string
   produto_id: number
   principal: boolean
 }
@@ -25,6 +26,7 @@ export const ImagensRepository = {
     const image = await prisma.produtos_images.create({
       data: {
         images_url: body.url_image,
+        public_id: body.public_id,
         id_produto: body.produto_id,
         principal: body.principal
       }

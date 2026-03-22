@@ -57,7 +57,7 @@ export default async function Produtos({ searchParams }: Props) {
                     <div className="aspect-8/5 relative bg-gray-100">
                       <Image
                         src={produto.produtos_images[0] ? produto.produtos_images[0].images_url : "/logo.jpeg"}
-                        alt=""
+                        alt={produto.nome_produtos}
                         fill
                         className="w-full h-full object-cover"
                       />
@@ -65,7 +65,7 @@ export default async function Produtos({ searchParams }: Props) {
 
                     <div className="flex flex-col flex-1 p-2 bg-white">
                       <p className="text-base font-medium line-clamp-2 min-h-11 max-h-11"> {produto.nome_produtos} </p>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-1 min-h-[1.25rem]"> {produto.desc_produtos} </p>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-1 min-h-5"> {produto.desc_produtos} </p>
 
                       <div className="mt-auto flex items-end">
                         <span className="text-sm font-bold text-green-700"> R$ {produto.preco_produtos} </span>
