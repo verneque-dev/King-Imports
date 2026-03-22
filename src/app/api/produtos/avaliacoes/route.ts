@@ -1,3 +1,4 @@
+import { authAdmin } from "@/middlewares/authAdminMiddleware"
 import { AvaliacoesService } from "@/modules/produtos/avaliacoes/avaliacoesService"
 import { AppError } from "@/shared/errors/AppError"
 import { cookies } from "next/headers"
@@ -40,6 +41,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const auth = await authAdmin()
+  if (!auth) {
+    return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+  }
+  if (typeof auth !== "string" && auth.tipo !== "admin") {
+    return NextResponse.json({ message: "Você não tem permissão para acessar essa rota" })
+  }
+  
   const body = await req.json()
   try {
     const avaliacao = await AvaliacoesService.statusAvaliacao(body)

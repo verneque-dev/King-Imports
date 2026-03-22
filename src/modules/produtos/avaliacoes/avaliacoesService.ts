@@ -4,6 +4,7 @@ import { AvaliacoesRepository } from "./avaliacoesRepository"
 import { ProdutosRepository } from "../produtosRepository"
 import { cookies } from "next/headers"
 import { randomUUID } from "crypto"
+import { authAdmin } from "@/middlewares/authAdminMiddleware"
 
 
 export const AvaliacoesService = {
@@ -34,8 +35,16 @@ export const AvaliacoesService = {
       return avaliacao
     }
 
+    const auth = await authAdmin()
+    if (!auth) {
+      throw new AppError("Token inválido", 401)
+    }
+    if (typeof auth !== "string" && auth.tipo !== "admin") {
+      throw new AppError("Você não tem permissão para acessar essa rota", 401)
+    }
+    
     if (aprovado) {
-      if (aprovado !== "true" && aprovado !== "false") {
+      if (aprovado !== "false" && aprovado !== "true") {
         throw new AppError("Dados inválidos", 400)
       }
       const status = aprovado === "true" ? true : false
@@ -43,6 +52,7 @@ export const AvaliacoesService = {
       const avaliacoes = await AvaliacoesRepository.getAvaliacoesByAprovado(status)
       return avaliacoes
     }
+
     const avaliacoes = await AvaliacoesRepository.getAvaliacoes()
     return avaliacoes
   },

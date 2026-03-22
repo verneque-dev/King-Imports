@@ -194,12 +194,15 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
 
   return (
     <div className="flex flex-col w-full px-5 pb-10">
-      <div className="flex gap-5 mx-auto justify-center">
+      <div className="flex gap-5 mx-auto justify-center flex-wrap">
         <button type="button" className="w-36 bg-yellow-300 text-white
-      font-bold cursor-pointer rounded-lg mb-10 text-lg" onClick={() => setOverlayCreate(true)}> criar produto </button>
+      font-bold cursor-pointer rounded-lg text-lg items-center h-14" onClick={() => setOverlayCreate(true)}> criar produto </button>
 
         <Link href="/dashboard/categorias" className="w-36 py-3 bg-yellow-300 text-white
-      font-bold cursor-pointer rounded-lg mb-10 text-lg flex justify-center"> categorias </Link>
+      font-bold cursor-pointer rounded-lg text-lg flex justify-center items-center h-14"> categorias </Link>
+
+        <Link href="/dashboard/avaliacoes" className="w-36 py-3 bg-yellow-300 text-white
+      font-bold cursor-pointer rounded-lg mb-10 text-lg flex justify-center items-center h-14"> avaliações </Link>
       </div>
 
       {props.produtos.data.map((produto, i) => {
@@ -304,7 +307,7 @@ export function ListProdutos(props: { produtos: Produto, categorias: Categoria[]
           <div className="flex flex-col fixed bg-black min-h-110 shadow-2xl rounded-2xl
           p-10 items-center justify-center md:w-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50  border border-yellow-300">
             <form action="" method="post" onSubmit={handleUpload} className="flex flex-col gap-5 items-center">
-              <input type="file" accept="image/*" name="file" className="bg-white p-3" required/>
+              <input type="file" accept="image/*" name="file" className="bg-white p-3 w-64" required/>
               <select name="tipo" id="" className="bg-white h-10 px-3 w-full">
                 <option value="false"> normal </option>
                 <option value="true"> principal </option>

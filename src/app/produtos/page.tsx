@@ -4,6 +4,17 @@ import { Produto } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
 import { FiltroCategoria } from "@/components/filtroCategorias"
 
+export const metadata = {
+  title: "Produtos",
+  description: "Explore nossa coleção exclusiva de produtos importados de primeira linha. Relógios, eletrônicos e acessórios com o melhor custo-benefício e qualidade premium.",
+  keywords: ["comprar importados", "relógios primeira linha", "acessórios premium", "king imports produtos"],
+  openGraph: {
+    title: "Catálogo de Produtos | King Imports",
+    description: "Os melhores produtos de primeira linha selecionados para você. Confira nossas ofertas.",
+    type: "website",
+  },
+};
+
 type Props = {
   searchParams: Promise<{
     search: string

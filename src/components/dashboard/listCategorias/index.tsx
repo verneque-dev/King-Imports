@@ -101,13 +101,16 @@ export function ListCategorias(props: { categorias: Categoria[] }) {
     }
 
     return (
-        <div className="flex flex-col w-full px-5">
-            <div className="flex gap-5 mx-auto">
+        <div className="flex flex-col w-full px-5 ">
+            <div className="flex gap-5 mx-auto flex-wrap justify-center">
                 <button type="button" className="w-36 bg-yellow-300 text-white
-          font-bold cursor-pointer rounded-lg mb-10 text-lg" onClick={() => setOverlayCreate(true)}> criar categoria </button>
+          font-bold cursor-pointer rounded-lg text-lg items-center h-14" onClick={() => setOverlayCreate(true)}> criar categoria </button>
 
                 <Link href="/dashboard" className="w-36 py-3 bg-yellow-300 text-white
-          font-bold cursor-pointer rounded-lg mb-10 text-lg flex justify-center"> inicio </Link>
+          font-bold cursor-pointer rounded-lg text-lg flex justify-center items-center h-14"> inicio </Link>
+
+                <Link href="/dashboard/avaliacoes" className="w-36 py-3 bg-yellow-300 text-white
+          font-bold cursor-pointer rounded-lg mb-10 text-lg flex justify-center items-center h-14"> avaliações </Link>
             </div>
 
             {props.categorias.map((categoria, i) => {

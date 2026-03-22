@@ -10,6 +10,9 @@ interface Avaliacao {
 export const AvaliacoesRepository = {
   getAvaliacoes: async function () {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      omit: {
+        token: true
+      },
       orderBy: {
         created_at: "desc"
       }
@@ -19,6 +22,9 @@ export const AvaliacoesRepository = {
 
   getAvaliacoesPorProduto: async function (id_produto: number) {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      omit: {
+        token: true
+      },
       where: {
         id_produto: id_produto,
         aprovado: true
@@ -32,6 +38,9 @@ export const AvaliacoesRepository = {
 
   getAvaliacoesById: async function (id_avaliacao: number) {
     const avaliacao = await prisma.produtos_avaliacoes.findUnique({
+      omit: {
+        token: true
+      },
       where: {
         id_avaliacao: id_avaliacao,
       }
@@ -41,6 +50,9 @@ export const AvaliacoesRepository = {
 
   getAvaliacoesByTokenId: async function (id: number, token: string) {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      omit: {
+        token: true
+      },
       where: {
         token: token,
         id_produto: id
@@ -54,6 +66,9 @@ export const AvaliacoesRepository = {
 
   getAvaliacoesByAprovado: async function (aprovado: boolean) {
     const avaliacoes = await prisma.produtos_avaliacoes.findMany({
+      omit: {
+        token: true
+      },
       where: {
         aprovado: aprovado
       },

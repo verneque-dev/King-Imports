@@ -1,9 +1,18 @@
 import cloudinary from "@/lib/cloudinary";
+import { authAdmin } from "@/middlewares/authAdminMiddleware";
 import { UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await authAdmin()
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
+    if (typeof auth !== "string" && auth.tipo !== "admin") {
+      return NextResponse.json({ message: "Você não tem permissão para acessar essa rota" })
+    }
+
     const formData = await req.formData()
     const file = formData.get("file") as File
 
@@ -36,6 +45,14 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const auth = await authAdmin()
+    if (!auth) {
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 })
+    }
+    if (typeof auth !== "string" && auth.tipo !== "admin") {
+      return NextResponse.json({ message: "Você não tem permissão para acessar essa rota" })
+    }
+    
     const { public_id } = await req.json()
     const result = await cloudinary.uploader.destroy(public_id)
     if (result.result !== "ok") {

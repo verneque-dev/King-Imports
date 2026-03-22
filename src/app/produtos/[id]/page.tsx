@@ -4,7 +4,37 @@ import { urlApi } from "@/lib/api"
 import { StarsBar } from "@/components/starsMedia";
 import { MdAccountCircle } from "react-icons/md";
 import { FormAddCarrinho } from "@/components/formAddCarrinho"
-import { FormAvaliacao } from "@/components/formAvaliacao";
+import { FormAvaliacao } from "@/components/formAvaliacao"
+
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  
+  const res = await fetch(`${urlApi}/api/produtos/${id}`)
+  const produto = await res.json()
+
+  if (!produto || !produto.nome_produtos) {
+    return { title: "Produto não encontrado" }
+  }
+
+  return {
+    title: produto.nome_produtos,
+    description: `Compre ${produto.nome_produtos} com o melhor preço na King Imports. Qualidade premium de primeira linha.`,
+    openGraph: {
+      title: `${produto.nome_produtos} | King Imports`,
+      description: produto.desc_produtos || "Confira os detalhes deste produto exclusivo.",
+      images: [
+        {
+          url: produto.produtos_images?.[0]?.images_url || '/og-image.jpg',
+          width: 800,
+          height: 600,
+          alt: produto.nome_produtos,
+        },
+      ],
+      type: 'article',
+    },
+  }
+}
 
 export default async function ProdutoDetails(context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
