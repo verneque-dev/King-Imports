@@ -42,7 +42,7 @@ export const AvaliacoesService = {
     if (typeof auth !== "string" && auth.tipo !== "admin") {
       throw new AppError("Você não tem permissão para acessar essa rota", 401)
     }
-    
+
     if (aprovado) {
       if (aprovado !== "false" && aprovado !== "true") {
         throw new AppError("Dados inválidos", 400)
@@ -78,9 +78,8 @@ export const AvaliacoesService = {
   deleteAvaliacao: async function (id: string) {
     const cookieStore = await cookies()
     const token = cookieStore.get("token_session")?.value
-    if (!token) {
-      throw new AppError("Token não fornecido", 401)
-    }
+    const tokenAdm = cookieStore.get("token_admin")?.value
+
     const parsed = SchemaAvaliacoes.id.safeParse({ id })
     if (!parsed.success) {
       throw new AppError("Dados inválidos", 400)
@@ -89,6 +88,24 @@ export const AvaliacoesService = {
     if (!verifyIdAvaliacao) {
       throw new AppError("Avaliação não encontrada", 404)
     }
+
+    if (tokenAdm) {
+      const auth = await authAdmin()
+      if (!auth) {
+        throw new AppError("Token inválido", 401)
+      }
+      if (typeof auth !== "string" && auth.tipo !== "admin") {
+        throw new AppError("Você não tem permissão para acessar essa rota", 401)
+      }
+      
+      const avaliacao = await AvaliacoesRepository.deleteAvaliacaoAdm(parsed.data.id)
+      return avaliacao
+    }
+
+    if (!token) {
+      throw new AppError("Token não fornecido", 401)
+    }
+
     const avaliacao = await AvaliacoesRepository.deleteAvaliacao(parsed.data.id, token)
     return avaliacao
   },

@@ -60,4 +60,8 @@ export interface ProdutoAvaliacoes {
   created_at: Date
   id_produto: number
   token: string
+  
+  produtos: {
+    nome_produtos: string;
+  }
 }

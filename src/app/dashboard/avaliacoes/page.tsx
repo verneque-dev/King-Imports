@@ -1,11 +1,13 @@
 import { FiltroAvaliacoes } from "@/components/dashboard/filtroAvaliacoes"
+import { ListAvaliacoes } from "@/components/dashboard/listAvaliacoes"
+import { ProdutoAvaliacoes } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
 import { cookies } from "next/headers"
 
 export default async function Avaliacoes({ searchParams }: { searchParams: Promise<{ aprovado: string }> }) {
   const query = await searchParams
   const aprovado = query.aprovado ? `?aprovado=${query.aprovado}` : ""
-  
+
   const cookieStore = await cookies()
   const cookieHeader = cookieStore.toString()
 
@@ -15,11 +17,12 @@ export default async function Avaliacoes({ searchParams }: { searchParams: Promi
     },
     cache: "no-store"
   })
-  const avaliaoes = await res.json()
+  const avaliacoes = await res.json()
 
   return (
     <div>
       <FiltroAvaliacoes />
+      <ListAvaliacoes avaliacoes={avaliacoes}/>
     </div>
   )
 }

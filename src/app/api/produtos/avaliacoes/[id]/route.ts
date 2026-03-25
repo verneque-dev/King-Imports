@@ -1,3 +1,4 @@
+import { authAdmin } from "@/middlewares/authAdminMiddleware";
 import { AvaliacoesService } from "@/modules/produtos/avaliacoes/avaliacoesService";
 import { AppError } from "@/shared/errors/AppError";
 import { NextRequest, NextResponse } from "next/server";
@@ -5,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = await context.params 
+    const { id } = await context.params
     const avaliacoes = await AvaliacoesService.getAvaliacoes(req.url, id)
     return NextResponse.json(avaliacoes, { status: 200 })
   }
@@ -19,10 +20,10 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = await context.params 
+    const { id } = await context.params
     const avaliacao = await AvaliacoesService.deleteAvaliacao(id)
     if (avaliacao.count < 1) {
-      throw new AppError("Falha na autenticação", 401)
+      throw new AppError("Erro ao deletar avaliação", 400)
     }
     return new NextResponse(null, { status: 204 })
   }

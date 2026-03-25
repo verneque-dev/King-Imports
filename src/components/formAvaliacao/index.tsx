@@ -107,7 +107,7 @@ export function FormAvaliacao(props: { produtoId: number }) {
 
         const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
           timeZone: 'UTC'
-        });
+        })
         return (
           <div className="flex flex-col w-full justify-center mb-8" key={avaliacao.id_avaliacao}>
             <div className="flex items-center gap-2">
