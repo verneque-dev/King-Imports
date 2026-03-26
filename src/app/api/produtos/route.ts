@@ -3,6 +3,8 @@ import { ProdutosService } from "../../../modules/produtos/produtosService"
 import { AppError } from "@/shared/errors/AppError";
 import { authAdmin } from "@/middlewares/authAdminMiddleware";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const data = await ProdutosService.getProdutos(req.url)
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
     if (err instanceof AppError) {
       return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    console.error("ERRO_PRISMA_REAL:", err)
+    console.log(err)
     return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
