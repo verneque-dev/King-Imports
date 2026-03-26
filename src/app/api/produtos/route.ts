@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     if (err instanceof AppError) {
       return NextResponse.json({ message: err.message }, { status: err.status })
     }
-    console.error("ERRO_PRISMA_REAL:", error)
+    console.error("ERRO_PRISMA_REAL:", err)
     return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 })
   }
 }
