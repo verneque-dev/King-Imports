@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      path: "/"
+      path: "/",
+      maxAge: 60 * 60 * 24 * 15
     })
     return NextResponse.json({ message: "Login bem sucedido" }, { status: 200 })
   }

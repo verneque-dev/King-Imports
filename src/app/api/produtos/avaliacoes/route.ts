@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 365
+      maxAge: 60 * 60 * 24 * 365 * 100
     })
     return NextResponse.json({ data: avaliacao, message: "Avaliação criada com sucesso" }, { status: 201 })
   }
