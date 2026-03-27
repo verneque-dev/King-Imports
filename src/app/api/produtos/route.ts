@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(data, { status: 200 })
   }
   catch (err) {
-    console.log(err)
     if (err instanceof AppError) {
       return NextResponse.json({ message: err.message }, { status: err.status })
     }
