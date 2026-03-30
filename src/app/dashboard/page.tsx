@@ -4,10 +4,14 @@ import { Categoria } from "@/interfaces/categoria"
 import { Dashboard } from "@/interfaces/dashboard"
 import { Produto } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
+import { cookies } from "next/headers"
 
-export default async function DashBoard({ searchParams }: { searchParams: Promise<{categoria: string}> }) {
+export default async function DashBoard({ searchParams }: { searchParams: Promise<{ categoria: string }> }) {
   const query = await searchParams
   const categoria = query.categoria || ""
+
+  const cookieStore = await cookies()
+  const cookieHeader = cookieStore.toString()
 
   const resProdutos = await fetch(`${urlApi}/api/produtos?categoria=${categoria}`, {
     cache: "no-store"
@@ -16,6 +20,9 @@ export default async function DashBoard({ searchParams }: { searchParams: Promis
     cache: "no-store"
   })
   const resDashBoardData = await fetch(`${urlApi}/api/dashboard`, {
+    headers: {
+      "Cookie": cookieHeader
+    },
     cache: "no-store"
   })
 
@@ -44,7 +51,7 @@ export default async function DashBoard({ searchParams }: { searchParams: Promis
         </div>
       </div>
 
-      <ListProdutos produtos={produtos} categorias={categorias}/>
+      <ListProdutos produtos={produtos} categorias={categorias} />
     </div>
   )
 }
