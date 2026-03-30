@@ -43,7 +43,7 @@ export default async function DashBoard({ searchParams }: { searchParams: Promis
         </div>
 
         <div className="flex justify-center items-center h-16 w-36 bg-black rounded-lg shadow-lg">
-          <p className="text-white font-bold"> {stats.avaliacoes} avaliacoes </p>
+          <p className="text-white font-bold"> {stats.avaliacoes} avaliações </p>
         </div>
 
         <div className="flex justify-center items-center h-16 w-36 bg-black rounded-lg shadow-lg">

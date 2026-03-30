@@ -1,6 +1,5 @@
 import { FiltroAvaliacoes } from "@/components/dashboard/filtroAvaliacoes"
 import { ListAvaliacoes } from "@/components/dashboard/listAvaliacoes"
-import { ProdutoAvaliacoes } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
 import { cookies } from "next/headers"
 
