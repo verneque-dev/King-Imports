@@ -72,9 +72,11 @@ export function ListAvaliacoes(props: { avaliacoes: ProdutoAvaliacoes[] }) {
               <p className="font-semibold"> {dataFormatada} </p>
             </div>
             <div className="ml-auto flex gap-6">
-              <button className="cursor-pointer" onClick={() => handleAprovar(avaliacao.id_avaliacao)}>
-                <ImCheckboxChecked size={32} color="black" className="" />
-              </button>
+              {!avaliacao.aprovado && (
+                <button className="cursor-pointer" onClick={() => handleAprovar(avaliacao.id_avaliacao)}>
+                  <ImCheckboxChecked size={32} color="black" className="" />
+                </button>
+              )}
 
               <button className="cursor-pointer" onClick={() => handleDelete(avaliacao.id_avaliacao)}>
                 <MdDeleteForever size={32} color="white" className="bg-black p-1 rounded-lg" />
