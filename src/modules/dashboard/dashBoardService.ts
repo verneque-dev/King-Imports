@@ -6,7 +6,7 @@ export const DashBoardService = {
       produtos: await DashBoardRepository.produtosCount(),
       categorias: await DashBoardRepository.categoriasCount(),
       avaliacoes: await DashBoardRepository.avaliacoesCount(),
-      carrinhos: await DashBoardRepository.avaliacoesCount()
+      carrinhos: await DashBoardRepository.carrinhosCount()
     }
     
     return data
