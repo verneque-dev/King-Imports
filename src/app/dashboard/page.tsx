@@ -6,14 +6,15 @@ import { Produto } from "@/interfaces/produto"
 import { urlApi } from "@/lib/api"
 import { cookies } from "next/headers"
 
-export default async function DashBoard({ searchParams }: { searchParams: Promise<{ categoria: string }> }) {
+export default async function DashBoard({ searchParams }: { searchParams: Promise<{ categoria: string, search: string }> }) {
   const query = await searchParams
   const categoria = query.categoria || ""
+  const search = query.search || ""
 
   const cookieStore = await cookies()
   const cookieHeader = cookieStore.toString()
 
-  const resProdutos = await fetch(`${urlApi}/api/produtos?categoria=${categoria}`, {
+  const resProdutos = await fetch(`${urlApi}/api/produtos?categoria=${categoria}&search=${search}`, {
     cache: "no-store"
   })
   const resCategorias = await fetch(`${urlApi}/api/categorias`, {

@@ -35,7 +35,7 @@ export function Header() {
 
     // pesquisa na pagina dashboard
     if (pathname === "/dashboard") {
-      router.push(`/dashboard?${params.toString()}`)
+      return router.push(`/dashboard?${params.toString()}`)
     }
 
     // pesquisa na pagina produtos
