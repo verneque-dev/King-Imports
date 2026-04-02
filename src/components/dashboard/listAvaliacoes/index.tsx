@@ -6,6 +6,7 @@ import { ImCheckboxChecked } from "react-icons/im"
 import { urlApi } from "@/lib/api"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { StarsBar } from "../../starsMedia"
 
 export function ListAvaliacoes(props: { avaliacoes: ProdutoAvaliacoes[] }) {
   const router = useRouter()
@@ -55,9 +56,9 @@ export function ListAvaliacoes(props: { avaliacoes: ProdutoAvaliacoes[] }) {
     })
   }
   return (
-    <div className="flex flex-col w-full p-10">
+    <div className="flex flex-col w-full px-10 pb-10">
       {props.avaliacoes.map((avaliacao, i) => {
-        const dataObj = new Date(avaliacao.created_at);
+        const dataObj = new Date(avaliacao.created_at)
         const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
           timeZone: 'UTC'
         })
@@ -68,6 +69,7 @@ export function ListAvaliacoes(props: { avaliacoes: ProdutoAvaliacoes[] }) {
 
             <div className="flex flex-col flex-wrap w-full break-all gap-3">
               <p className=""> {avaliacao.comentario_avaliacao} </p>
+              <StarsBar media={avaliacao.nota_avaliacao} />
               <p className="font-semibold"> produto: {avaliacao.produtos.nome_produtos} </p>
               <p className="font-semibold"> {dataFormatada} </p>
             </div>
