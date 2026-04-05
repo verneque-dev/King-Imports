@@ -29,7 +29,7 @@ O **King Imports** é uma plataforma de e-commerce robusta desenvolvida com o qu
 - **Finalização via WhatsApp:** Integração direta para fechar pedidos de forma rápida e dinâmica.
 
 ### 🔐 Painel Administrativo (Backoffice)
-- **Gestão de Produtos:** CRUD completo (Criar, Ler, Atualizar e Deletar) com validação rigorosa via **Zod**.
+- **Gestão de Produtos e Categorias:** CRUD completo (Criar, Ler, Atualizar e Deletar) com validação rigorosa via **Zod**.
 - **Controle de Imagens:** Upload e exclusão de fotos consumindo a **Cloudinary API**.
 - **Moderação de Conteúdo:** Interface para aprovar ou rejeitar avaliações pendentes.
 - **Segurança:** Acesso protegido por autenticação **JWT** e criptografia de senhas com **Bcrypt**.
