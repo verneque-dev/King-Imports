@@ -84,14 +84,14 @@ Crie um arquivo .env na raiz do projeto:
 - CLOUDINARY_API_SECRET="seu_secret"
 
 4. **Prepare o banco de dados:**
-  ```bash
-  npx prisma migrate dev
-  ```
+   ```bash
+   npx prisma migrate dev
+   ```
 
 5. **Rode o servidor:**
-  ```bash
-  npm run dev
-  ```
+   ```bash
+   npm run dev
+   ```
 
 **👤 Autor**
 Vitor Henrique Verneque Silva
