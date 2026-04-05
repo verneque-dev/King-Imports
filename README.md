@@ -66,7 +66,7 @@ O projeto foi estruturado utilizando princípios de **Arquitetura Limpa (Clean A
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/verneque-dev/kingimports.git
+   git clone https://github.com/verneque-dev/King-Imports.git
    ```
 
 2. **Instale as dependências**
