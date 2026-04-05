@@ -15,7 +15,14 @@ O **King Imports** é uma plataforma de e-commerce robusta desenvolvida com o qu
 ## 📸 Layout
 
 <div align="center">
-  <img width="100%" alt="King Imports Preview" src="https://github.com/verneque-dev/King-Imports/issues/1#issue-4208523572" />
+  <h2> Home </h2>
+  <img width="1365" height="636" alt="Image" src="https://github.com/user-attachments/assets/e1d20eff-cb0d-4bab-be53-85d6676d47d1" />
+  <h2> Produtos </h2>
+  <img width="1365" height="632" alt="Image" src="https://github.com/user-attachments/assets/ffa3b1a4-9bea-41a5-b62f-60339f435c37" />
+  <h2> Sobre </h2>
+  <img width="1365" height="628" alt="Image" src="https://github.com/user-attachments/assets/c2a01376-55f7-4dca-a8ec-a14f9cf4043a" />
+  <h2> Painel de administrador </h2>
+  <img width="1365" height="627" alt="Image" src="https://github.com/user-attachments/assets/67fa8dce-b7eb-40ec-8374-fb9ebc49e3db" />
 </div>
 
 ---
