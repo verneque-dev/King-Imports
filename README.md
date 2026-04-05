@@ -77,15 +77,11 @@ O projeto foi estruturado utilizando princípios de **Arquitetura Limpa (Clean A
 3. **Configure as variáveis de ambiente:**
 Crie um arquivo .env na raiz do projeto:
 
-DATABASE_URL="sua_url_do_supabase"
-
-JWT_SECRET="sua_chave_secreta"
-
-CLOUDINARY_CLOUD_NAME="nome_do_cloud"
-
-CLOUDINARY_API_KEY="sua_key"
-
-CLOUDINARY_API_SECRET="seu_secret"
+- DATABASE_URL="sua_url_do_supabase"
+- JWT_SECRET="sua_chave_secreta"
+- CLOUDINARY_CLOUD_NAME="nome_do_cloud"
+- CLOUDINARY_API_KEY="sua_key"
+- CLOUDINARY_API_SECRET="seu_secret"
 
 4. **Prepare o banco de dados:**
 ```bash
