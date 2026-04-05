@@ -1,76 +1,35 @@
-# King Imports E-commerce
-[![NPM](https://img.shields.io/npm/l/react)](https://github.com/verneque-dev/produtos-catalogo/blob/main/LICENSE) 
+# 👑 King Imports | Fullstack E-commerce
 
-# Sobre o projeto
+> **Status do Projeto:** Em produção 🚀  
+> **Link do Projeto:** [kingimport.com.br](https://kingimport.com.br)
 
-https://kingimport.com.br
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC)](https://tailwindcss.com/)
 
-Um E-commerce de produtos com CRUD completo, sistema de avaliações, carrinho e paginação, painel administrativo completo e autenticação via JWT para acesso às rotas privadas, validação de dados com zod e criptografia de senhas. Uso da api do cloudinary para armaenamento de imagens dos produtos.
-O back-end foi construído em NextJS + Node.js e TypeScript (Route Handler), padrão de arquietetura limpa, realizando operações via prisma a um banco PostgreSQL.
-O front-end é construido Com NextJS com paginas tanto server side quanto client side reativas e dinamicas.
+O **King Imports** é uma plataforma de e-commerce robusta desenvolvida com o que há de mais moderno no ecossistema JavaScript. O projeto foca em performance, segurança e uma experiência de gestão completa para o administrador através de um CRUD intuitivo e arquitetura escalável.
 
-## Layout web
-<img width="1365" height="634" alt="image" src="https://github.com/user-attachments/assets/7e1d7e99-fb5e-4188-a2cc-9eb2591bfe3d" />
+---
 
-# Tecnologias utilizadas
-## Back end
-- NextJS
-- Node.js
-- TypeScript
-- Prisma
-- Zod
-- JWT
+## 📸 Layout
 
-## Front end
-- NextJS
-- React
-- Tailwind
-- Sonner
-- Swipper
-  
-## Implantação em produção
-- Back end + Front end: Vercel
-- Banco de dados: Supabase (PostgreSQL)
-  
-# Rotas Principais
+<div align="center">
+  <img width="100%" alt="King Imports Preview" src="https://github.com/user-attachments/assets/7e1d7e99-fb5e-4188-a2cc-9eb2591bfe3d" />
+</div>
 
-## Produtos
-- GET api/produtos listar produtos
-- POST api/produtos criar produto
-- PUT api/produtos editar produto
-- DELETE api/produtos/:id excluir produto
-  ## Imagens
-  - GET api/produtos/imagens listar
-  - POST api/produtos/imagens salvar url no banco
-  - DELETE api/produtos/imagens/:id excluir url do banco
-  ## Avaliacoes
-  - GET api/produtos/imagens listar avaliações
-  - POST api/produtos/imagens criar avaliação
-  - PATCH api/produtos/imagens aprovar ou reprovar avaliação
-  - DELETE api/produtos/imagens/:id deletar avaliação
+---
 
-## Categorias
-- GET api/categorias listar categorias
-- POST api/categorias criar categoria
-- PUT api/categorias editar categoria
-- DELETE api/categorias/:id deletar categoria
+## 🚀 Funcionalidades
 
-## Carrinho
-- GET api/carrinho listar carrinhos
-- POST api/carrinho adicionar ao carrinho
-- DELETE api/carrinho/:id deletar carrinho
-  ## Finalizar
-  - POST api/carrinho/finlizar finalizar pedido e gerar url WhatsApp
+### 🛍️ Experiência do Cliente
+- **Carrinho Dinâmico:** Adição, remoção e persistência de itens.
+- **Sistema de Avaliações:** Feedback real de usuários com controle de aprovação.
+- **Busca e Filtros:** Localização rápida de produtos por categorias e paginação eficiente.
+- **Finalização via WhatsApp:** Integração direta para fechar pedidos de forma rápida.
 
-## Upload
-- POST api/upload salva imagem usando api externa no banco do cloudinary
-- DELETE api/upload deleta imagem do banco da cloudinary usando api externa
-
-## Login
- - POST /login (retorna token JWT)
-
-# Autor
-
-Vitor Henrique Verneque Silva
-
-https://www.linkedin.com/in/vitor-verneque
+### 🔐 Painel Administrativo (Backoffice)
+- **Gestão de Produtos:** CRUD completo (Criar, Ler, Atualizar e Deletar) com validação **Zod**.
+- **Controle de Imagens:** Upload e exclusão de fotos via **Cloudinary API**.
+- **Moderação:** Aprovação ou reprovação de avaliações pendentes.
+- **Segurança:** Acesso protegido por autenticação **
