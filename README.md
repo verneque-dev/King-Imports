@@ -67,10 +67,12 @@ O projeto foi estruturado utilizando princípios de **Arquitetura Limpa (Clean A
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/verneque-dev/kingimports.git
+   ```
 
 2. **Instale as dependências**
    ```
    npm install
+   ```
 
 3. **Configure as variáveis de ambiente:**
 Crie um arquivo .env na raiz do projeto:
