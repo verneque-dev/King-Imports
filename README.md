@@ -68,7 +68,7 @@ O projeto foi estruturado utilizando princípios de **Arquitetura Limpa (Clean A
    ```bash
    git clone https://github.com/verneque-dev/kingimports.git
 
-2. **Instale as dependências
+2. **Instale as dependências**
    ```
    npm install
 
@@ -81,7 +81,7 @@ CLOUDINARY_CLOUD_NAME="nome_do_cloud"
 CLOUDINARY_API_KEY="sua_key"
 CLOUDINARY_API_SECRET="seu_secret"
 
-4. **Prepare o banco de dados:
+4. **Prepare o banco de dados:**
 ```bash
 npx prisma migrate dev
 ```
