@@ -90,7 +90,7 @@ CLOUDINARY_API_SECRET="seu_secret"
 npx prisma migrate dev
 ```
 
-5. Rode o servidor:
+5. **Rode o servidor:**
 ```bash
 npm run dev
 ```
