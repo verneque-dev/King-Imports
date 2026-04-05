@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# King Imports E-commerce
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/verneque-dev/produtos-catalogo/blob/main/LICENSE) 
 
-## Getting Started
+# Sobre o projeto
 
-First, run the development server:
+https://kingimport.com.br
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Um E-commerce de produtos com CRUD completo, sistema de avaliações, carrinho e paginação, painel administrativo completo e autenticação via JWT para acesso às rotas privadas, validação de dados com zod e criptografia de senhas. Uso da api do cloudinary para armaenamento de imagens dos produtos.
+O back-end foi construído em NextJS + Node.js e TypeScript (Route Handler), padrão de arquietetura limpa, realizando operações via prisma a um banco PostgreSQL.
+O front-end é construido Com NextJS com paginas tanto server side quanto client side reativas e dinamicas.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Layout web
+<img width="1365" height="634" alt="image" src="https://github.com/user-attachments/assets/7e1d7e99-fb5e-4188-a2cc-9eb2591bfe3d" />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Tecnologias utilizadas
+## Back end
+- NextJS
+- Node.js
+- TypeScript
+- Prisma
+- Zod
+- JWT
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Front end
+- NextJS
+- React
+- Tailwind
+- Sonner
+- Swipper
+  
+## Implantação em produção
+- Back end + Front end: Vercel
+- Banco de dados: Supabase (PostgreSQL)
+  
+# Rotas Principais
 
-## Learn More
+## Produtos
+- GET api/produtos listar produtos
+- POST api/produtos criar produto
+- PUT api/produtos editar produto
+- DELETE api/produtos/:id excluir produto
+  ## Imagens
+  - GET api/produtos/imagens listar
+  - POST api/produtos/imagens salvar url no banco
+  - DELETE api/produtos/imagens/:id excluir url do banco
+  ## Avaliacoes
+  - GET api/produtos/imagens listar avaliações
+  - POST api/produtos/imagens criar avaliação
+  - PATCH api/produtos/imagens aprovar ou reprovar avaliação
+  - DELETE api/produtos/imagens/:id deletar avaliação
 
-To learn more about Next.js, take a look at the following resources:
+## Categorias
+- GET api/categorias listar categorias
+- POST api/categorias criar categoria
+- PUT api/categorias editar categoria
+- DELETE api/categorias/:id deletar categoria
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Carrinho
+- GET api/carrinho listar carrinhos
+- POST api/carrinho adicionar ao carrinho
+- DELETE api/carrinho/:id deletar carrinho
+  ## Finalizar
+  - POST api/carrinho/finlizar finalizar pedido e gerar url WhatsApp
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Upload
+- POST api/upload salva imagem usando api externa no banco do cloudinary
+- DELETE api/upload deleta imagem do banco da cloudinary usando api externa
 
-## Deploy on Vercel
+## Login
+ - POST /login (retorna token JWT)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Autor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vitor Henrique Verneque Silva
+
+https://www.linkedin.com/in/vitor-verneque
